@@ -337,7 +337,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
 
     @Override
     public void simStateChanged(Simulation simulation, SimState simState) {
-        if(simState != SimState.running) {
+        if(simState == SimState.stopped) {
             if (turboCB.isSelected()) {
 
                 updateGUISimFinished(simulation);

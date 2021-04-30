@@ -1,17 +1,14 @@
 package continualAssistants;
 
 import OSPABA.*;
-import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
 import OSPABA.Process;
 
-//meta! id="39"
-public class WaitingProcess extends Process
+//meta! id="87"
+public class LunchTransitionProcess extends Process
 {
-	private static UniformContinuousRNG m_gen = new UniformContinuousRNG(0.0, 1.0);
-
-	public WaitingProcess(int id, Simulation mySim, CommonAgent myAgent)
+	public LunchTransitionProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
 	}
@@ -23,12 +20,9 @@ public class WaitingProcess extends Process
 		// Setup component for the next replication
 	}
 
-	//meta! sender="WaitingRoomAgent", id="40", type="Start"
+	//meta! sender="LunchTransitionAgent", id="88", type="Start"
 	public void processStart(MessageForm message)
 	{
-		message.setCode(Mc.finish);
-		double waitingTime = ((m_gen.sample() < 0.95) ? 15 * 60 : 30 * 60);
-		hold(waitingTime, message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -36,9 +30,6 @@ public class WaitingProcess extends Process
 	{
 		switch (message.code())
 		{
-			case Mc.finish:
-				assistantFinished(message);
-				break;
 		}
 	}
 
@@ -60,9 +51,9 @@ public class WaitingProcess extends Process
 	//meta! tag="end"
 
 	@Override
-	public WaitingRoomAgent myAgent()
+	public LunchTransitionAgent myAgent()
 	{
-		return (WaitingRoomAgent)super.myAgent();
+		return (LunchTransitionAgent)super.myAgent();
 	}
 
 }

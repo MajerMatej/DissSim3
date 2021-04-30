@@ -27,24 +27,6 @@ public class VaccinationCenterManager extends Manager
 		}
 	}
 
-	//meta! sender="ExaminationAgent", id="20", type="Response"
-	public void processExaminationRR(MessageForm message)
-	{
-		message.setCode(Mc.vaccinationRR);
-		message.setAddressee(mySim().findAgent(Id.vaccinationAgent));
-
-		request(message);
-	}
-
-	//meta! sender="WaitingRoomAgent", id="22", type="Response"
-	public void processWaitingRR(MessageForm message)
-	{
-		message.setCode(Mc.customerLeftNotice);
-		message.setAddressee(mySim().findAgent(Id.modelAgent));
-
-		notice(message);
-	}
-
 	//meta! sender="RegistrationAgent", id="19", type="Response"
 	public void processRegistrationRR(MessageForm message)
 	{
@@ -81,6 +63,54 @@ public class VaccinationCenterManager extends Manager
 		}
 	}
 
+	//meta! sender="ExaTransitionAgent", id="47", type="Response"
+	public void processExaminationRR(MessageForm message)
+	{
+		message.setCode(Mc.vaccinationRR);
+		message.setAddressee(mySim().findAgent(Id.vaccinationAgent));
+
+		request(message);
+	}
+
+	//meta! sender="WaitTransitionAgent", id="50", type="Response"
+	public void processWaitingRR(MessageForm message)
+	{
+		message.setCode(Mc.customerLeftNotice);
+		message.setAddressee(mySim().findAgent(Id.modelAgent));
+
+		notice(message);
+	}
+
+	//meta! sender="RegistrationAgent", id="61", type="Request"
+	public void processLunchRRRegistrationAgent(MessageForm message)
+	{
+	}
+
+	//meta! sender="WaitTransitionAgent", id="69", type="Request"
+	public void processLunchRRWaitTransitionAgent(MessageForm message)
+	{
+	}
+
+	//meta! sender="VaccinationAgent", id="65", type="Request"
+	public void processLunchRRVaccinationAgent(MessageForm message)
+	{
+	}
+
+	//meta! sender="ExaTransitionAgent", id="64", type="Request"
+	public void processLunchRRExaTransitionAgent(MessageForm message)
+	{
+	}
+
+	//meta! userInfo="Removed from model"
+	public void processLunchRRLunchAgent(MessageForm message)
+	{
+	}
+
+	//meta! sender="LunchTransitionAgent", id="84", type="Response"
+	public void processRequestResponse(MessageForm message)
+	{
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -91,24 +121,49 @@ public class VaccinationCenterManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.registrationRR:
-			processRegistrationRR(message);
+		case Mc.lunchRR:
+			switch (message.sender().id())
+			{
+			case Id.registrationAgent:
+				processLunchRRRegistrationAgent(message);
+			break;
+
+			case Id.waitTransitionAgent:
+				processLunchRRWaitTransitionAgent(message);
+			break;
+
+			case Id.vaccinationAgent:
+				processLunchRRVaccinationAgent(message);
+			break;
+
+			case Id.exaTransitionAgent:
+				processLunchRRExaTransitionAgent(message);
+			break;
+			}
 		break;
 
-		case Mc.examinationRR:
-			processExaminationRR(message);
+		case Mc.customerArrivalNotice:
+			processCustomerArrivalNotice(message);
 		break;
 
-		case Mc.vaccinationRR:
-			processVaccinationRR(message);
+		case Mc.requestResponse:
+			processRequestResponse(message);
 		break;
 
 		case Mc.waitingRR:
 			processWaitingRR(message);
 		break;
 
-		case Mc.customerArrivalNotice:
-			processCustomerArrivalNotice(message);
+		case Mc.vaccinationRR:
+			processVaccinationRR(message);
+		break;
+
+		case Mc.examinationRR:
+			processExaminationRR(message);
+		break;
+
+		case Mc.registrationRR:
+			processRegistrationRR(message);
 		break;
 
 		default:

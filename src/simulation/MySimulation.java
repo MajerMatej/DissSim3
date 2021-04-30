@@ -151,10 +151,15 @@ public class MySimulation extends Simulation
 		setModelAgent(new ModelAgent(Id.modelAgent, this, null));
 		setEnviroAgent(new EnviroAgent(Id.enviroAgent, this, modelAgent()));
 		setVaccinationCenterAgent(new VaccinationCenterAgent(Id.vaccinationCenterAgent, this, modelAgent()));
-		setWaitingRoomAgent(new WaitingRoomAgent(Id.waitingRoomAgent, this, vaccinationCenterAgent()));
+		setExaTransitionAgent(new ExaTransitionAgent(Id.exaTransitionAgent, this, vaccinationCenterAgent()));
+		setWaitTransitionAgent(new WaitTransitionAgent(Id.waitTransitionAgent, this, vaccinationCenterAgent()));
+		setLunchTransitionAgent(new LunchTransitionAgent(Id.lunchTransitionAgent, this, vaccinationCenterAgent()));
 		setRegistrationAgent(new RegistrationAgent(Id.registrationAgent, this, vaccinationCenterAgent()));
-		setExaminationAgent(new ExaminationAgent(Id.examinationAgent, this, vaccinationCenterAgent()));
+		setExaminationAgent(new ExaminationAgent(Id.examinationAgent, this, exaTransitionAgent()));
 		setVaccinationAgent(new VaccinationAgent(Id.vaccinationAgent, this, vaccinationCenterAgent()));
+		setWaitingRoomAgent(new WaitingRoomAgent(Id.waitingRoomAgent, this, waitTransitionAgent()));
+		setLunchAgent(new LunchAgent(Id.lunchAgent, this, lunchTransitionAgent()));
+		setVaccinationFillAgent(new VaccinationFillAgent(Id.vaccinationFillAgent, this, vaccinationAgent()));
 	}
 
 	private ModelAgent _modelAgent;
@@ -181,13 +186,29 @@ public VaccinationCenterAgent vaccinationCenterAgent()
 	public void setVaccinationCenterAgent(VaccinationCenterAgent vaccinationCenterAgent)
 	{_vaccinationCenterAgent = vaccinationCenterAgent; }
 
-	private WaitingRoomAgent _waitingRoomAgent;
+	private ExaTransitionAgent _exaTransitionAgent;
 
-public WaitingRoomAgent waitingRoomAgent()
-	{ return _waitingRoomAgent; }
+public ExaTransitionAgent exaTransitionAgent()
+	{ return _exaTransitionAgent; }
 
-	public void setWaitingRoomAgent(WaitingRoomAgent waitingRoomAgent)
-	{_waitingRoomAgent = waitingRoomAgent; }
+	public void setExaTransitionAgent(ExaTransitionAgent exaTransitionAgent)
+	{_exaTransitionAgent = exaTransitionAgent; }
+
+	private WaitTransitionAgent _waitTransitionAgent;
+
+public WaitTransitionAgent waitTransitionAgent()
+	{ return _waitTransitionAgent; }
+
+	public void setWaitTransitionAgent(WaitTransitionAgent waitTransitionAgent)
+	{_waitTransitionAgent = waitTransitionAgent; }
+
+	private LunchTransitionAgent _lunchTransitionAgent;
+
+public LunchTransitionAgent lunchTransitionAgent()
+	{ return _lunchTransitionAgent; }
+
+	public void setLunchTransitionAgent(LunchTransitionAgent lunchTransitionAgent)
+	{_lunchTransitionAgent = lunchTransitionAgent; }
 
 	private RegistrationAgent _registrationAgent;
 
@@ -212,6 +233,30 @@ public VaccinationAgent vaccinationAgent()
 
 	public void setVaccinationAgent(VaccinationAgent vaccinationAgent)
 	{_vaccinationAgent = vaccinationAgent; }
+
+	private WaitingRoomAgent _waitingRoomAgent;
+
+public WaitingRoomAgent waitingRoomAgent()
+	{ return _waitingRoomAgent; }
+
+	public void setWaitingRoomAgent(WaitingRoomAgent waitingRoomAgent)
+	{_waitingRoomAgent = waitingRoomAgent; }
+
+	private LunchAgent _lunchAgent;
+
+public LunchAgent lunchAgent()
+	{ return _lunchAgent; }
+
+	public void setLunchAgent(LunchAgent lunchAgent)
+	{_lunchAgent = lunchAgent; }
+
+	private VaccinationFillAgent _vaccinationFillAgent;
+
+public VaccinationFillAgent vaccinationFillAgent()
+	{ return _vaccinationFillAgent; }
+
+	public void setVaccinationFillAgent(VaccinationFillAgent vaccinationFillAgent)
+	{_vaccinationFillAgent = vaccinationFillAgent; }
 	//meta! tag="end"
 
 	public int getNumOfAdminWorkers() {

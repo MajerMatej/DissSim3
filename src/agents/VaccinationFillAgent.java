@@ -6,14 +6,13 @@ import managers.*;
 import continualAssistants.*;
 import instantAssistants.*;
 
-//meta! id="2"
-public class EnviroAgent extends Agent
+//meta! id="52"
+public class VaccinationFillAgent extends Agent
 {
-	public EnviroAgent(int id, Simulation mySim, Agent parent)
+	public VaccinationFillAgent(int id, Simulation mySim, Agent parent)
 	{
 		super(id, mySim, parent);
 		init();
-		addOwnMessage(Mc.customerArrivalNotice);
 	}
 
 	@Override
@@ -26,10 +25,9 @@ public class EnviroAgent extends Agent
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	private void init()
 	{
-		new EnviroManager(Id.enviroManager, mySim(), this);
-		new CustomerArrivalScheduler(Id.customerArrivalScheduler, mySim(), this);
-		addOwnMessage(Mc.startGeneratingNotice);
-		addOwnMessage(Mc.customerLeftNotice);
+		new VaccinationFillManager(Id.vaccinationFillManager, mySim(), this);
+		new VaccinationFillProcess(Id.vaccinationFillProcess, mySim(), this);
+		addOwnMessage(Mc.vaccinationRR);
 	}
 	//meta! tag="end"
 }

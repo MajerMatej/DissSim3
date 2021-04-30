@@ -35,6 +35,7 @@ public class WaitingRoomAgent extends Agent
 		new WaitingRoomManager(Id.waitingRoomManager, mySim(), this);
 		new WaitingProcess(Id.waitingProcess, mySim(), this);
 		addOwnMessage(Mc.waitingRR);
+		addOwnMessage(Mc.lunchRR);
 	}
 	//meta! tag="end"
 

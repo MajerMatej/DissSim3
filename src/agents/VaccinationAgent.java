@@ -44,6 +44,7 @@ public class VaccinationAgent extends Agent
 	{
 		new VaccinationManager(Id.vaccinationManager, mySim(), this);
 		new VaccinationProcess(Id.vaccinationProcess, mySim(), this);
+		addOwnMessage(Mc.lunchRR);
 		addOwnMessage(Mc.vaccinationRR);
 	}
 	//meta! tag="end"

@@ -49,7 +49,7 @@ public class ModelManager extends Manager
 	}
 
 
-		//meta! userInfo="Process messages defined in code", id="0"
+	//meta! userInfo="Process messages defined in code", id="0"
 	public void processDefault(MessageForm message)
 	{
 		switch (message.code())
@@ -70,12 +70,12 @@ public class ModelManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.customerArrivalNotice:
-			processCustomerArrivalNotice(message);
-		break;
-
 		case Mc.customerLeftNotice:
 			processCustomerLeftNotice(message);
+		break;
+
+		case Mc.customerArrivalNotice:
+			processCustomerArrivalNotice(message);
 		break;
 
 		default:

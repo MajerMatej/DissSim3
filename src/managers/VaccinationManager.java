@@ -60,7 +60,7 @@ public class VaccinationManager extends Manager
 	}
 
 	//meta! sender="VaccinationCenterAgent", id="21", type="Request"
-	public void processVaccinationRR(MessageForm message)
+	public void processVaccinationRRVaccinationCenterAgent(MessageForm message)
 	{
 		Nurse nurse = getAvailableNurse();
 		if(nurse == null || myAgent().getCustomersQueue().size() > 0) {
@@ -79,6 +79,16 @@ public class VaccinationManager extends Manager
 		}
 	}
 
+	//meta! sender="VaccinationCenterAgent", id="65", type="Response"
+	public void processLunchRR(MessageForm message)
+	{
+	}
+
+	//meta! sender="VaccinationFillAgent", id="55", type="Response"
+	public void processVaccinationRRVaccinationFillAgent(MessageForm message)
+	{
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -89,12 +99,25 @@ public class VaccinationManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.finish:
-			processFinish(message);
+		case Mc.lunchRR:
+			processLunchRR(message);
 		break;
 
 		case Mc.vaccinationRR:
-			processVaccinationRR(message);
+			switch (message.sender().id())
+			{
+			case Id.vaccinationFillAgent:
+				processVaccinationRRVaccinationFillAgent(message);
+			break;
+
+			case Id.vaccinationCenterAgent:
+				processVaccinationRRVaccinationCenterAgent(message);
+			break;
+			}
+		break;
+
+		case Mc.finish:
+			processFinish(message);
 		break;
 
 		default:

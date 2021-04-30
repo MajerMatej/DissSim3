@@ -29,7 +29,7 @@ public class ModelAgent extends Agent
 		addOwnMessage(Mc.customerLeftNotice);
 		addOwnMessage(Mc.customerArrivalNotice);
 	}
-
+	//meta! tag="end"
 	public void runSim()
 	{
 		MyMessage message = new MyMessage(mySim());
@@ -37,5 +37,4 @@ public class ModelAgent extends Agent
 		message.setAddressee(this);
 		manager().notice(message);
 	}
-	//meta! tag="end"
 }

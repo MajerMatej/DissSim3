@@ -47,6 +47,7 @@ public class ExaminationAgent extends Agent
 		new ExaminationManager(Id.examinationManager, mySim(), this);
 		new ExaminationProces(Id.examinationProces, mySim(), this);
 		addOwnMessage(Mc.examinationRR);
+		addOwnMessage(Mc.lunchRR);
 	}
 	//meta! tag="end"
 

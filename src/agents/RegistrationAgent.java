@@ -45,6 +45,7 @@ public class RegistrationAgent extends Agent
 	{
 		new RegistrationManager(Id.registrationManager, mySim(), this);
 		new RegistrationProcess(Id.registrationProcess, mySim(), this);
+		addOwnMessage(Mc.lunchRR);
 		addOwnMessage(Mc.registrationRR);
 	}
 	//meta! tag="end"

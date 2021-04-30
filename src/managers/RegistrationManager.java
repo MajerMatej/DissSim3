@@ -77,6 +77,11 @@ public class RegistrationManager extends Manager
 		}
 	}
 
+	//meta! sender="VaccinationCenterAgent", id="61", type="Response"
+	public void processLunchRR(MessageForm message)
+	{
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -87,12 +92,16 @@ public class RegistrationManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.registrationRR:
-			processRegistrationRR(message);
+		case Mc.lunchRR:
+			processLunchRR(message);
 		break;
 
 		case Mc.finish:
 			processFinish(message);
+		break;
+
+		case Mc.registrationRR:
+			processRegistrationRR(message);
 		break;
 
 		default:

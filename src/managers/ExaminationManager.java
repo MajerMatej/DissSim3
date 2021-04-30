@@ -39,7 +39,7 @@ public class ExaminationManager extends Manager
 		}
 	}
 
-	//meta! sender="VaccinationCenterAgent", id="20", type="Request"
+	//meta! sender="ExaTransitionAgent", id="20", type="Request"
 	public void processExaminationRR(MessageForm message)
 	{
 		Doctor doctor = getAvailableDoctor();
@@ -79,6 +79,11 @@ public class ExaminationManager extends Manager
 		}
 	}
 
+	//meta! sender="ExaTransitionAgent", id="63", type="Response"
+	public void processLunchRR(MessageForm message)
+	{
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -91,6 +96,10 @@ public class ExaminationManager extends Manager
 		{
 		case Mc.finish:
 			processFinish(message);
+		break;
+
+		case Mc.lunchRR:
+			processLunchRR(message);
 		break;
 
 		case Mc.examinationRR:

@@ -27,7 +27,7 @@ public class WaitingRoomManager extends Manager
 		}
 	}
 
-	//meta! sender="VaccinationCenterAgent", id="22", type="Request"
+	//meta! sender="WaitTransitionAgent", id="22", type="Request"
 	public void processWaitingRR(MessageForm message)
 	{
 		message.setAddressee(myAgent().findAssistant(Id.waitingProcess));
@@ -54,6 +54,11 @@ public class WaitingRoomManager extends Manager
 		}
 	}
 
+	//meta! sender="WaitTransitionAgent", id="68", type="Response"
+	public void processLunchRR(MessageForm message)
+	{
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -70,6 +75,10 @@ public class WaitingRoomManager extends Manager
 
 		case Mc.waitingRR:
 			processWaitingRR(message);
+		break;
+
+		case Mc.lunchRR:
+			processLunchRR(message);
 		break;
 
 		default:

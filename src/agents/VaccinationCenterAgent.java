@@ -28,7 +28,9 @@ public class VaccinationCenterAgent extends Agent
 		new VaccinationCenterManager(Id.vaccinationCenterManager, mySim(), this);
 		addOwnMessage(Mc.examinationRR);
 		addOwnMessage(Mc.waitingRR);
+		addOwnMessage(Mc.lunchRR);
 		addOwnMessage(Mc.registrationRR);
+		addOwnMessage(Mc.requestResponse);
 		addOwnMessage(Mc.vaccinationRR);
 		addOwnMessage(Mc.customerArrivalNotice);
 	}
