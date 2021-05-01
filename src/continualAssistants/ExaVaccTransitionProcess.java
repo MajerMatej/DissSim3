@@ -1,6 +1,7 @@
 package continualAssistants;
 
 import OSPABA.*;
+import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
 import OSPABA.Process;
@@ -8,6 +9,7 @@ import OSPABA.Process;
 //meta! id="73"
 public class ExaVaccTransitionProcess extends Process
 {
+
 	public ExaVaccTransitionProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
@@ -30,6 +32,9 @@ public class ExaVaccTransitionProcess extends Process
 	{
 		switch (message.code())
 		{
+			case Mc.finish:
+			assistantFinished(message);
+			break;
 		}
 	}
 

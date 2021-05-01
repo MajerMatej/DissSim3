@@ -35,6 +35,8 @@ public class ExaTransitionManager extends Manager
 	//meta! sender="VaccinationCenterAgent", id="47", type="Request"
 	public void processExaminationRRVaccinationCenterAgent(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.regExaTransitionProcess));
+		startContinualAssistant(message);
 	}
 
 	//meta! sender="ExaminationAgent", id="63", type="Request"
@@ -58,6 +60,7 @@ public class ExaTransitionManager extends Manager
 	//meta! sender="RegExaTransitionProcess", id="72", type="Finish"
 	public void processFinishRegExaTransitionProcess(MessageForm message)
 	{
+		message.setAddressee(mySim().findAgent(Id.examinationAgent));
 	}
 
 	//meta! sender="ExaVaccTransitionProcess", id="74", type="Finish"

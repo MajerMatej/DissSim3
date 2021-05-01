@@ -1,6 +1,7 @@
 package continualAssistants;
 
 import OSPABA.*;
+import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
 import OSPABA.Process;
@@ -8,6 +9,7 @@ import OSPABA.Process;
 //meta! id="71"
 public class RegExaTransitionProcess extends Process
 {
+	private static UniformContinuousRNG m_gen = new UniformContinuousRNG(40.0,90.0);
 	public RegExaTransitionProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
@@ -23,6 +25,8 @@ public class RegExaTransitionProcess extends Process
 	//meta! sender="ExaTransitionAgent", id="72", type="Start"
 	public void processStart(MessageForm message)
 	{
+		message.setCode(Mc.finish);
+		hold(m_gen.sample(), message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -30,6 +34,9 @@ public class RegExaTransitionProcess extends Process
 	{
 		switch (message.code())
 		{
+			case Mc.finish:
+				assistantFinished(message);
+				break;
 		}
 	}
 

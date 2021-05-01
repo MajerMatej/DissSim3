@@ -31,7 +31,7 @@ public class VaccinationCenterManager extends Manager
 	public void processRegistrationRR(MessageForm message)
 	{
 		message.setCode(Mc.examinationRR);
-		message.setAddressee(mySim().findAgent(Id.examinationAgent));
+		message.setAddressee(mySim().findAgent(Id.exaTransitionAgent));
 
 		request(message);
 	}

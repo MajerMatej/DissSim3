@@ -92,6 +92,17 @@ public class MainWindow extends JFrame implements ISimDelegate {
     private JButton refreshButton;
     private JLabel ciL;
     private JSlider slider2;
+    private JLabel regQLCI;
+    private JLabel regWTCI;
+    private JLabel regUtilCI;
+    private JLabel exaQLCI;
+    private JLabel exaWTCI;
+    private JLabel exaUtilCI;
+    private JLabel vaccQLCI;
+    private JLabel vaccWTCI;
+    private JLabel vaccUtilCI;
+    private JLabel vaccAvgRefillWT;
+    private JLabel vaccRefillCI;
     private JPanel chartTab;
 
     private int m_workers;
@@ -175,7 +186,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
                             Integer.parseInt(doctorsTF.getText()), Integer.parseInt(nursesTF.getText()),
                             Integer.parseInt(repTimeTB.getText()), slider1.getValue() + 1, Integer.parseInt(customersTF.getText()));
                     pauseBTN.setEnabled(true);
-                    runBTN.setText("Stop");
+                    runBTN.setText("St♥p");
                     running = true;
                 }
             }
@@ -228,6 +239,12 @@ public class MainWindow extends JFrame implements ISimDelegate {
             @Override
             public void stateChanged(ChangeEvent e) {
                 changeSimSpeed();
+            }
+        });
+        turboCB.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) { /*changeSimSpeed()*/;
+
             }
         });
     }
@@ -367,34 +384,34 @@ public class MainWindow extends JFrame implements ISimDelegate {
             replicationL.setText(String.format("Actual replication: %d" , sim.currentReplication()));
             systemTimeL.setText(String.format("System time: %02d : %02d : %02d", hours, minutes, seconds));
 
-            avgTimeInRegQL.setText(String.format("Average time in Queue: %.4f", sim.registrationAgent().getWaitingTimeStat().mean()));
-            avgPplInRegQL.setText(String.format("Average Queue length: %.4f", sim.registrationAgent().getWaitingTimeStat().mean()
+            avgTimeInRegQL.setText(String.format("%.4f", sim.registrationAgent().getWaitingTimeStat().mean()));
+            avgPplInRegQL.setText(String.format("%.4f", sim.registrationAgent().getWaitingTimeStat().mean()
                     * sim.registrationAgent().getWaitingTimeStat().sampleSize()
                     / sim.currentTime()));
-            utilRegL.setText(String.format("Utilization: %.4f ", sim.registrationAgent().getAdminWorkersUtilization() * 100) + "%");
+            utilRegL.setText(String.format("%.4f ", sim.registrationAgent().getAdminWorkersUtilization() * 100) + "%");
             availWorkL.setText("Available: " + sim.registrationAgent().getAvailableAdminWorkers().size());
             pplInRegQL.setText("Queue length: " + sim.registrationAgent().getCustomersQueue().size());
 
-            avgTimeInMedQ.setText(String.format("Average time in Queue: %.4f", sim.examinationAgent().getWaitingTimeStat().mean()));
-            avgPplInMedQL.setText(String.format("Average Queue length: %.4f", sim.examinationAgent().getWaitingTimeStat().mean()
+            avgTimeInMedQ.setText(String.format("%.4f", sim.examinationAgent().getWaitingTimeStat().mean()));
+            avgPplInMedQL.setText(String.format("%.4f", sim.examinationAgent().getWaitingTimeStat().mean()
                     * sim.examinationAgent().getWaitingTimeStat().sampleSize()
                     / sim.currentTime()));
-            utilDocL.setText(String.format("Utilization: %.4f ", sim.examinationAgent().getDoctorsUtilization() * 100) + "%");
+            utilDocL.setText(String.format("%.4f ", sim.examinationAgent().getDoctorsUtilization() * 100) + "%");
             availDocL.setText("Available: " + sim.examinationAgent().getAvailableDoctors().size());
             pplInMedQL.setText("Queue length: " + sim.examinationAgent().getCustomersQueue().size());
 
-            avgTimeInVaccQL.setText(String.format("Average time in Queue: %.4f", sim.vaccinationAgent().getWaitingTimeStat().mean()));
-            avgPplInVaccQL.setText(String.format("Average Queue length: %.4f ", sim.vaccinationAgent().getWaitingTimeStat().mean()
+            avgTimeInVaccQL.setText(String.format("%.4f", sim.vaccinationAgent().getWaitingTimeStat().mean()));
+            avgPplInVaccQL.setText(String.format("%.4f ", sim.vaccinationAgent().getWaitingTimeStat().mean()
                     * sim.vaccinationAgent().getWaitingTimeStat().sampleSize()
                     / sim.currentTime()));
 
-            utilNurL.setText(String.format("Utilization: %.4f ", sim.vaccinationAgent().getNursesUtilization() * 100) + "%");
+            utilNurL.setText(String.format("%.4f ", sim.vaccinationAgent().getNursesUtilization() * 100) + "%");
             availNurL.setText("Available: " + sim.vaccinationAgent().getAvailableNurses().size());
             pplInVaccQL.setText("Queue length: " + sim.vaccinationAgent().getCustomersQueue().size());
 
             pplInWRL.setText("Ppl in waiting room: " + sim.waitingRoomAgent().getCustomersWaiting());
 
-            avgPplInWRL.setText(String.format("Avg waiting room size: %.4f ", sim.waitingRoomAgent().getWaitingTimeStat().mean()
+            avgPplInWRL.setText(String.format("%.4f ", sim.waitingRoomAgent().getWaitingTimeStat().mean()
                     * sim.waitingRoomAgent().getWaitingTimeStat().sampleSize()
                     / sim.currentTime()));
 
@@ -424,23 +441,20 @@ public class MainWindow extends JFrame implements ISimDelegate {
             MySimulation sim = ((MySimulation) simulation);
             replicationL.setText(String.format("Actual replication: %d", sim.currentReplication()));
 
-            avgTimeInRegQL.setText(String.format("Average time in Queue: %.4f", sim.getWaitingTimeReg().mean()));
-            avgPplInRegQL.setText(String.format("Average Queue length: %.4f", sim.getAvgCustomersReg().mean()));
-            utilRegL.setText(String.format("Utilization: %.4f ", sim.getWorkerUtil().mean() * 100) + "%");
+            avgTimeInRegQL.setText(String.format("%.4f", sim.getWaitingTimeReg().mean()));
+            avgPplInRegQL.setText(String.format("%.4f", sim.getAvgCustomersReg().mean()));
+            utilRegL.setText(String.format("%.4f ", sim.getWorkerUtil().mean() * 100) + "%");
 
-            avgTimeInMedQ.setText(String.format("Average time in Queue: %.4f", sim.getWaitingTimeExa().mean()));
-            avgPplInMedQL.setText(String.format("Average Queue length: %.4f", sim.getAvgCustomersExa().mean()));
-            utilDocL.setText(String.format("Utilization: %.4f ", sim.getDoctorUtil().mean() * 100) + "%");
+            avgTimeInMedQ.setText(String.format("%.4f", sim.getWaitingTimeExa().mean()));
+            avgPplInMedQL.setText(String.format("%.4f", sim.getAvgCustomersExa().mean()));
+            utilDocL.setText(String.format("%.4f ", sim.getDoctorUtil().mean() * 100) + "%");
 
-            avgTimeInVaccQL.setText(String.format("Average time in Queue: %.4f", sim.getWaitingTimeVacc().mean()));
-            avgPplInVaccQL.setText(String.format("Average Queue length: %.4f ", sim.getAvgCustomersVacc().mean()));
-            utilNurL.setText(String.format("Utilization: %.4f ", sim.getNurseUtil().mean() * 100) + "%");
+            avgTimeInVaccQL.setText(String.format("%.4f", sim.getWaitingTimeVacc().mean()));
+            avgPplInVaccQL.setText(String.format("%.4f ", sim.getAvgCustomersVacc().mean()));
+            utilNurL.setText(String.format("%.4f ", sim.getNurseUtil().mean() * 100) + "%");
 
-            avgPplInWRL.setText(String.format("Avg waiting room size: %.4f ", sim.getAvgCustomersWR().mean()));
-            if (sim.currentReplication() > 30) {
-                ciL.setText(String.format("<%.4f , %.4f>", sim.getAvgCustomersWR().confidenceInterval_95()[0],
-                        sim.getAvgCustomersWR().confidenceInterval_95()[1]));
-            }
+            avgPplInWRL.setText(String.format("%.4f ", sim.getAvgCustomersWR().mean()));
+            updateConfidenceIntervals(simulation);
         }catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -463,6 +477,46 @@ public class MainWindow extends JFrame implements ISimDelegate {
             {
                 app.setTurbo(true);
             }
+        }
+    }
+
+    private void updateConfidenceIntervals(Simulation simulation)
+    {
+        MySimulation sim = ((MySimulation) simulation);
+        /*95% Confidence interval:*/
+        if (sim.currentReplication() > 1) {
+            ciL.setText(String.format("<%.4f , %.4f>", sim.getAvgCustomersWR().confidenceInterval_95()[0],
+                    sim.getAvgCustomersWR().confidenceInterval_95()[1]));
+
+            regQLCI.setText(String.format("<%.4f , %.4f>",
+                    sim.getAvgCustomersReg().confidenceInterval_95()[0],
+                    sim.getAvgCustomersReg().confidenceInterval_95()[1]));
+            regWTCI.setText(String.format(" <%.4f , %.4f>",
+                    sim.getWaitingTimeReg().confidenceInterval_95()[0],
+                    sim.getWaitingTimeReg().confidenceInterval_95()[1]));
+            regUtilCI.setText(String.format(" <%.4f , %.4f>",
+                    sim.getWorkerUtil().confidenceInterval_95()[0],
+                    sim.getWorkerUtil().confidenceInterval_95()[1]));
+
+            exaQLCI.setText(String.format(" <%.4f , %.4f>",
+                    sim.getAvgCustomersExa().confidenceInterval_95()[0],
+                    sim.getAvgCustomersExa().confidenceInterval_95()[1]));
+            exaWTCI.setText(String.format(" <%.4f , %.4f>",
+                    sim.getWaitingTimeExa().confidenceInterval_95()[0],
+                    sim.getWaitingTimeExa().confidenceInterval_95()[1]));
+            exaUtilCI.setText(String.format(" <%.4f , %.4f>",
+                    sim.getDoctorUtil().confidenceInterval_95()[0],
+                    sim.getDoctorUtil().confidenceInterval_95()[1]));
+
+            vaccQLCI.setText(String.format(" <%.4f , %.4f>",
+                    sim.getAvgCustomersVacc().confidenceInterval_95()[0],
+                    sim.getAvgCustomersVacc().confidenceInterval_95()[1]));
+            vaccWTCI.setText(String.format(" <%.4f , %.4f>",
+                    sim.getWaitingTimeVacc().confidenceInterval_95()[0],
+                    sim.getWaitingTimeVacc().confidenceInterval_95()[1]));
+            vaccUtilCI.setText(String.format(" <%.4f , %.4f>",
+                    sim.getNurseUtil().confidenceInterval_95()[0],
+                    sim.getNurseUtil().confidenceInterval_95()[1]));
         }
     }
 }
