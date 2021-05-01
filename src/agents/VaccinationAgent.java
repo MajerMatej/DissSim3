@@ -1,6 +1,5 @@
 package agents;
 
-import Employee.AdminWorker;
 import Employee.Nurse;
 import OSPABA.*;
 import OSPDataStruct.SimQueue;
@@ -45,6 +44,7 @@ public class VaccinationAgent extends Agent
 		new VaccinationManager(Id.vaccinationManager, mySim(), this);
 		new VaccinationProcess(Id.vaccinationProcess, mySim(), this);
 		addOwnMessage(Mc.lunchRR);
+		addOwnMessage(Mc.refillRR);
 		addOwnMessage(Mc.vaccinationRR);
 	}
 	//meta! tag="end"

@@ -40,7 +40,7 @@ public class VaccinationCenterManager extends Manager
 	public void processVaccinationRR(MessageForm message)
 	{
 		message.setCode(Mc.waitingRR);
-		message.setAddressee(mySim().findAgent(Id.waitingRoomAgent));
+		message.setAddressee(mySim().findAgent(Id.waitTransitionAgent));
 
 		request(message);
 
@@ -101,11 +101,6 @@ public class VaccinationCenterManager extends Manager
 	{
 	}
 
-	//meta! userInfo="Removed from model"
-	public void processLunchRRLunchAgent(MessageForm message)
-	{
-	}
-
 	//meta! sender="LunchTransitionAgent", id="84", type="Response"
 	public void processRequestResponse(MessageForm message)
 	{
@@ -121,6 +116,10 @@ public class VaccinationCenterManager extends Manager
 	{
 		switch (message.code())
 		{
+		case Mc.vaccinationRR:
+			processVaccinationRR(message);
+		break;
+
 		case Mc.lunchRR:
 			switch (message.sender().id())
 			{
@@ -128,42 +127,38 @@ public class VaccinationCenterManager extends Manager
 				processLunchRRRegistrationAgent(message);
 			break;
 
-			case Id.waitTransitionAgent:
-				processLunchRRWaitTransitionAgent(message);
+			case Id.exaTransitionAgent:
+				processLunchRRExaTransitionAgent(message);
 			break;
 
 			case Id.vaccinationAgent:
 				processLunchRRVaccinationAgent(message);
 			break;
 
-			case Id.exaTransitionAgent:
-				processLunchRRExaTransitionAgent(message);
+			case Id.waitTransitionAgent:
+				processLunchRRWaitTransitionAgent(message);
 			break;
 			}
-		break;
-
-		case Mc.customerArrivalNotice:
-			processCustomerArrivalNotice(message);
-		break;
-
-		case Mc.requestResponse:
-			processRequestResponse(message);
 		break;
 
 		case Mc.waitingRR:
 			processWaitingRR(message);
 		break;
 
-		case Mc.vaccinationRR:
-			processVaccinationRR(message);
-		break;
-
-		case Mc.examinationRR:
-			processExaminationRR(message);
+		case Mc.requestResponse:
+			processRequestResponse(message);
 		break;
 
 		case Mc.registrationRR:
 			processRegistrationRR(message);
+		break;
+
+		case Mc.customerArrivalNotice:
+			processCustomerArrivalNotice(message);
+		break;
+
+		case Mc.examinationRR:
+			processExaminationRR(message);
 		break;
 
 		default:

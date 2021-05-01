@@ -1,8 +1,6 @@
 package agents;
 
-import Employee.AdminWorker;
 import Employee.Doctor;
-import Employee.Nurse;
 import OSPABA.*;
 import OSPDataStruct.SimQueue;
 import OSPStat.Stat;
@@ -10,7 +8,6 @@ import OSPStat.WStat;
 import simulation.*;
 import managers.*;
 import continualAssistants.*;
-import instantAssistants.*;
 
 import java.util.LinkedList;
 

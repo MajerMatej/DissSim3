@@ -5,8 +5,6 @@ import OSPABA.*;
 import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
-import continualAssistants.*;
-import instantAssistants.*;
 
 import java.util.LinkedList;
 
@@ -92,12 +90,12 @@ public class RegistrationManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.lunchRR:
-			processLunchRR(message);
-		break;
-
 		case Mc.finish:
 			processFinish(message);
+		break;
+
+		case Mc.lunchRR:
+			processLunchRR(message);
 		break;
 
 		case Mc.registrationRR:

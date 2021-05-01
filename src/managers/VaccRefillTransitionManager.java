@@ -1,15 +1,16 @@
 package managers;
 
 import OSPABA.*;
+import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
 import continualAssistants.*;
 import instantAssistants.*;
 
-//meta! id="52"
-public class VaccinationFillManager extends Manager
+//meta! id="93"
+public class VaccRefillTransitionManager extends Manager
 {
-	public VaccinationFillManager(int id, Simulation mySim, Agent myAgent)
+	public VaccRefillTransitionManager(int id, Simulation mySim, Agent myAgent)
 	{
 		super(id, mySim, myAgent);
 		init();
@@ -27,8 +28,13 @@ public class VaccinationFillManager extends Manager
 		}
 	}
 
-	//meta! sender="VaccRefillTransitionAgent", id="55", type="Request"
-	public void processRefillRR(MessageForm message)
+	//meta! sender="VaccinationFillAgent", id="55", type="Response"
+	public void processRefillRRVaccinationFillAgent(MessageForm message)
+	{
+	}
+
+	//meta! sender="VaccinationAgent", id="95", type="Request"
+	public void processRefillRRVaccinationAgent(MessageForm message)
 	{
 	}
 
@@ -38,11 +44,6 @@ public class VaccinationFillManager extends Manager
 		switch (message.code())
 		{
 		}
-	}
-
-	//meta! sender="VaccinationFillProcess", id="78", type="Finish"
-	public void processFinish(MessageForm message)
-	{
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -55,12 +56,17 @@ public class VaccinationFillManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.finish:
-			processFinish(message);
-		break;
-
 		case Mc.refillRR:
-			processRefillRR(message);
+			switch (message.sender().id())
+			{
+			case Id.vaccinationFillAgent:
+				processRefillRRVaccinationFillAgent(message);
+			break;
+
+			case Id.vaccinationAgent:
+				processRefillRRVaccinationAgent(message);
+			break;
+			}
 		break;
 
 		default:
@@ -71,9 +77,9 @@ public class VaccinationFillManager extends Manager
 	//meta! tag="end"
 
 	@Override
-	public VaccinationFillAgent myAgent()
+	public VaccRefillTransitionAgent myAgent()
 	{
-		return (VaccinationFillAgent)super.myAgent();
+		return (VaccRefillTransitionAgent)super.myAgent();
 	}
 
 }

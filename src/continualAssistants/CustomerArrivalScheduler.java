@@ -59,6 +59,8 @@ public class CustomerArrivalScheduler extends Scheduler
 			hold(time, copy);
 			assistantFinished(message);
 		}
+
+		//assistantFinished(message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

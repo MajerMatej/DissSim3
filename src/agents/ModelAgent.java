@@ -3,8 +3,6 @@ package agents;
 import OSPABA.*;
 import simulation.*;
 import managers.*;
-import continualAssistants.*;
-import instantAssistants.*;
 
 //meta! id="1"
 public class ModelAgent extends Agent

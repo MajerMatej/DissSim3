@@ -30,6 +30,8 @@ public class ExaTransitionManager extends Manager
 	//meta! sender="ExaminationAgent", id="20", type="Response"
 	public void processExaminationRRExaminationAgent(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.exaVaccTransitionProcess));
+		startContinualAssistant(message);
 	}
 
 	//meta! sender="VaccinationCenterAgent", id="47", type="Request"
@@ -61,11 +63,18 @@ public class ExaTransitionManager extends Manager
 	public void processFinishRegExaTransitionProcess(MessageForm message)
 	{
 		message.setAddressee(mySim().findAgent(Id.examinationAgent));
+		message.setCode(Mc.examinationRR);
+
+		request(message);
 	}
 
 	//meta! sender="ExaVaccTransitionProcess", id="74", type="Finish"
 	public void processFinishExaVaccTransitionProcess(MessageForm message)
 	{
+		//message.setAddressee(mySim().findAgent(Id.vaccinationCenterAgent));
+		message.setCode(Mc.examinationRR);
+
+		response(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -78,19 +87,6 @@ public class ExaTransitionManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.lunchRR:
-			switch (message.sender().id())
-			{
-			case Id.examinationAgent:
-				processLunchRRExaminationAgent(message);
-			break;
-
-			case Id.vaccinationCenterAgent:
-				processLunchRRVaccinationCenterAgent(message);
-			break;
-			}
-		break;
-
 		case Mc.examinationRR:
 			switch (message.sender().id())
 			{
@@ -107,12 +103,25 @@ public class ExaTransitionManager extends Manager
 		case Mc.finish:
 			switch (message.sender().id())
 			{
+			case Id.exaVaccTransitionProcess:
+				processFinishExaVaccTransitionProcess(message);
+			break;
+
 			case Id.regExaTransitionProcess:
 				processFinishRegExaTransitionProcess(message);
 			break;
+			}
+		break;
 
-			case Id.exaVaccTransitionProcess:
-				processFinishExaVaccTransitionProcess(message);
+		case Mc.lunchRR:
+			switch (message.sender().id())
+			{
+			case Id.vaccinationCenterAgent:
+				processLunchRRVaccinationCenterAgent(message);
+			break;
+
+			case Id.examinationAgent:
+				processLunchRRExaminationAgent(message);
 			break;
 			}
 		break;

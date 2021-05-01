@@ -23,6 +23,10 @@ public class MyMessage extends MessageForm
 	private double m_startWaitingRoom;
 	private double m_totalWaitingRoom;
 
+	private double m_startWaitingRefill;
+	private double m_totalWaitingRefill;
+	private Nurse m_refillNurse;
+
 	public MyMessage(Simulation sim)
 	{
 		super(sim);
@@ -156,5 +160,29 @@ public class MyMessage extends MessageForm
 
 	public void setTotalWaitingRoom(double totalWaitingRoom) {
 		this.m_totalWaitingRoom = totalWaitingRoom;
+	}
+
+	public double getStartWaitingRefill() {
+		return m_startWaitingRefill;
+	}
+
+	public void setStartWaitingRefill(double startWaitingRefill) {
+		this.m_startWaitingRefill = startWaitingRefill;
+	}
+
+	public double getTotalWaitingRefill() {
+		return m_totalWaitingRefill;
+	}
+
+	public void setTotalWaitingRefill(double totalWaitingRefill) {
+		this.m_totalWaitingRefill = totalWaitingRefill;
+	}
+
+	public Nurse getRefillNurse() {
+		return m_refillNurse;
+	}
+
+	public void setRefillNurse(Nurse refillNurse) {
+		this.m_refillNurse = refillNurse;
 	}
 }

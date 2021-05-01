@@ -1,6 +1,7 @@
 package continualAssistants;
 
 import OSPABA.*;
+import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
 import OSPABA.Process;
@@ -8,6 +9,7 @@ import OSPABA.Process;
 //meta! id="75"
 public class VaccWaitTransitionProcess extends Process
 {
+	private static UniformContinuousRNG m_gen = new UniformContinuousRNG(45.0, 110.0);
 	public VaccWaitTransitionProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
@@ -23,6 +25,8 @@ public class VaccWaitTransitionProcess extends Process
 	//meta! sender="WaitTransitionAgent", id="76", type="Start"
 	public void processStart(MessageForm message)
 	{
+		message.setCode(Mc.finish);
+		hold(m_gen.sample(), message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -30,6 +34,9 @@ public class VaccWaitTransitionProcess extends Process
 	{
 		switch (message.code())
 		{
+			case Mc.finish:
+				assistantFinished(message);
+				break;
 		}
 	}
 

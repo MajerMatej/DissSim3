@@ -151,15 +151,16 @@ public class MySimulation extends Simulation
 		setModelAgent(new ModelAgent(Id.modelAgent, this, null));
 		setEnviroAgent(new EnviroAgent(Id.enviroAgent, this, modelAgent()));
 		setVaccinationCenterAgent(new VaccinationCenterAgent(Id.vaccinationCenterAgent, this, modelAgent()));
+		setLunchTransitionAgent(new LunchTransitionAgent(Id.lunchTransitionAgent, this, vaccinationCenterAgent()));
+		setLunchAgent(new LunchAgent(Id.lunchAgent, this, lunchTransitionAgent()));
 		setExaTransitionAgent(new ExaTransitionAgent(Id.exaTransitionAgent, this, vaccinationCenterAgent()));
 		setWaitTransitionAgent(new WaitTransitionAgent(Id.waitTransitionAgent, this, vaccinationCenterAgent()));
-		setLunchTransitionAgent(new LunchTransitionAgent(Id.lunchTransitionAgent, this, vaccinationCenterAgent()));
 		setRegistrationAgent(new RegistrationAgent(Id.registrationAgent, this, vaccinationCenterAgent()));
 		setExaminationAgent(new ExaminationAgent(Id.examinationAgent, this, exaTransitionAgent()));
 		setVaccinationAgent(new VaccinationAgent(Id.vaccinationAgent, this, vaccinationCenterAgent()));
 		setWaitingRoomAgent(new WaitingRoomAgent(Id.waitingRoomAgent, this, waitTransitionAgent()));
-		setLunchAgent(new LunchAgent(Id.lunchAgent, this, lunchTransitionAgent()));
-		setVaccinationFillAgent(new VaccinationFillAgent(Id.vaccinationFillAgent, this, vaccinationAgent()));
+		setVaccRefillTransitionAgent(new VaccRefillTransitionAgent(Id.vaccRefillTransitionAgent, this, vaccinationAgent()));
+		setVaccinationFillAgent(new VaccinationFillAgent(Id.vaccinationFillAgent, this, vaccRefillTransitionAgent()));
 	}
 
 	private ModelAgent _modelAgent;
@@ -186,6 +187,22 @@ public VaccinationCenterAgent vaccinationCenterAgent()
 	public void setVaccinationCenterAgent(VaccinationCenterAgent vaccinationCenterAgent)
 	{_vaccinationCenterAgent = vaccinationCenterAgent; }
 
+	private LunchTransitionAgent _lunchTransitionAgent;
+
+public LunchTransitionAgent lunchTransitionAgent()
+	{ return _lunchTransitionAgent; }
+
+	public void setLunchTransitionAgent(LunchTransitionAgent lunchTransitionAgent)
+	{_lunchTransitionAgent = lunchTransitionAgent; }
+
+	private LunchAgent _lunchAgent;
+
+public LunchAgent lunchAgent()
+	{ return _lunchAgent; }
+
+	public void setLunchAgent(LunchAgent lunchAgent)
+	{_lunchAgent = lunchAgent; }
+
 	private ExaTransitionAgent _exaTransitionAgent;
 
 public ExaTransitionAgent exaTransitionAgent()
@@ -201,14 +218,6 @@ public WaitTransitionAgent waitTransitionAgent()
 
 	public void setWaitTransitionAgent(WaitTransitionAgent waitTransitionAgent)
 	{_waitTransitionAgent = waitTransitionAgent; }
-
-	private LunchTransitionAgent _lunchTransitionAgent;
-
-public LunchTransitionAgent lunchTransitionAgent()
-	{ return _lunchTransitionAgent; }
-
-	public void setLunchTransitionAgent(LunchTransitionAgent lunchTransitionAgent)
-	{_lunchTransitionAgent = lunchTransitionAgent; }
 
 	private RegistrationAgent _registrationAgent;
 
@@ -242,13 +251,13 @@ public WaitingRoomAgent waitingRoomAgent()
 	public void setWaitingRoomAgent(WaitingRoomAgent waitingRoomAgent)
 	{_waitingRoomAgent = waitingRoomAgent; }
 
-	private LunchAgent _lunchAgent;
+	private VaccRefillTransitionAgent _vaccRefillTransitionAgent;
 
-public LunchAgent lunchAgent()
-	{ return _lunchAgent; }
+public VaccRefillTransitionAgent vaccRefillTransitionAgent()
+	{ return _vaccRefillTransitionAgent; }
 
-	public void setLunchAgent(LunchAgent lunchAgent)
-	{_lunchAgent = lunchAgent; }
+	public void setVaccRefillTransitionAgent(VaccRefillTransitionAgent vaccRefillTransitionAgent)
+	{_vaccRefillTransitionAgent = vaccRefillTransitionAgent; }
 
 	private VaccinationFillAgent _vaccinationFillAgent;
 

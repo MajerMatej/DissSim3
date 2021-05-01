@@ -9,7 +9,7 @@ import OSPABA.Process;
 //meta! id="73"
 public class ExaVaccTransitionProcess extends Process
 {
-
+	private static UniformContinuousRNG m_gen = new UniformContinuousRNG(20.0, 45.0);
 	public ExaVaccTransitionProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
@@ -25,6 +25,8 @@ public class ExaVaccTransitionProcess extends Process
 	//meta! sender="ExaTransitionAgent", id="74", type="Start"
 	public void processStart(MessageForm message)
 	{
+		message.setCode(Mc.finish);
+		hold(m_gen.sample(), message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

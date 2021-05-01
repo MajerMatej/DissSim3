@@ -30,11 +30,17 @@ public class WaitTransitionManager extends Manager
 	//meta! sender="WaitingRoomAgent", id="22", type="Response"
 	public void processWaitingRRWaitingRoomAgent(MessageForm message)
 	{
+		//message.setAddressee(mySim().findAgent(Id.vaccinationCenterAgent));
+		//message.setCode(Mc.waitingRR);
+
+		response(message);
 	}
 
 	//meta! sender="VaccinationCenterAgent", id="50", type="Request"
 	public void processWaitingRRVaccinationCenterAgent(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.vaccWaitTransitionProcess));
+		startContinualAssistant(message);
 	}
 
 	//meta! sender="VaccinationCenterAgent", id="69", type="Response"
@@ -58,6 +64,10 @@ public class WaitTransitionManager extends Manager
 	//meta! sender="VaccWaitTransitionProcess", id="76", type="Finish"
 	public void processFinish(MessageForm message)
 	{
+		message.setAddressee(mySim().findAgent(Id.waitingRoomAgent));
+		message.setCode(Mc.waitingRR);
+
+		request(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -70,19 +80,6 @@ public class WaitTransitionManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.lunchRR:
-			switch (message.sender().id())
-			{
-			case Id.vaccinationCenterAgent:
-				processLunchRRVaccinationCenterAgent(message);
-			break;
-
-			case Id.waitingRoomAgent:
-				processLunchRRWaitingRoomAgent(message);
-			break;
-			}
-		break;
-
 		case Mc.waitingRR:
 			switch (message.sender().id())
 			{
@@ -98,6 +95,19 @@ public class WaitTransitionManager extends Manager
 
 		case Mc.finish:
 			processFinish(message);
+		break;
+
+		case Mc.lunchRR:
+			switch (message.sender().id())
+			{
+			case Id.waitingRoomAgent:
+				processLunchRRWaitingRoomAgent(message);
+			break;
+
+			case Id.vaccinationCenterAgent:
+				processLunchRRVaccinationCenterAgent(message);
+			break;
+			}
 		break;
 
 		default:

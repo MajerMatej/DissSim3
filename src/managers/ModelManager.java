@@ -70,12 +70,12 @@ public class ModelManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.customerLeftNotice:
-			processCustomerLeftNotice(message);
-		break;
-
 		case Mc.customerArrivalNotice:
 			processCustomerArrivalNotice(message);
+		break;
+
+		case Mc.customerLeftNotice:
+			processCustomerLeftNotice(message);
 		break;
 
 		default:

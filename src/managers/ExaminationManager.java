@@ -1,13 +1,10 @@
 package managers;
 
-import Employee.AdminWorker;
 import Employee.Doctor;
 import OSPABA.*;
 import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
-import continualAssistants.*;
-import instantAssistants.*;
 
 import java.util.LinkedList;
 
@@ -94,16 +91,16 @@ public class ExaminationManager extends Manager
 	{
 		switch (message.code())
 		{
+		case Mc.examinationRR:
+			processExaminationRR(message);
+		break;
+
 		case Mc.finish:
 			processFinish(message);
 		break;
 
 		case Mc.lunchRR:
 			processLunchRR(message);
-		break;
-
-		case Mc.examinationRR:
-			processExaminationRR(message);
 		break;
 
 		default:

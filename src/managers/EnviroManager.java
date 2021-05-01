@@ -3,8 +3,6 @@ package managers;
 import OSPABA.*;
 import simulation.*;
 import agents.*;
-import continualAssistants.*;
-import instantAssistants.*;
 
 //meta! id="2"
 public class EnviroManager extends Manager
@@ -79,12 +77,12 @@ public class EnviroManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.startGeneratingNotice:
-			processStartGeneratingNotice(message);
-		break;
-
 		case Mc.customerLeftNotice:
 			processCustomerLeftNotice(message);
+		break;
+
+		case Mc.startGeneratingNotice:
+			processStartGeneratingNotice(message);
 		break;
 
 		case Mc.finish:

@@ -14,6 +14,7 @@ public class Mc extends IdList
 	public static final int vaccinationRR = 1006;
 	public static final int waitingRR = 1007;
 	public static final int customerLeftNotice = 1008;
+	public static final int refillRR = 1023;
 	//meta! tag="end"
 
 	// 1..1000 range reserved for user

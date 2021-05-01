@@ -1,13 +1,10 @@
 package managers;
 
-import Employee.Doctor;
 import Employee.Nurse;
 import OSPABA.*;
 import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
-import continualAssistants.*;
-import instantAssistants.*;
 
 import java.util.LinkedList;
 
@@ -42,7 +39,8 @@ public class VaccinationManager extends Manager
 	//meta! sender="VaccinationProcess", id="37", type="Finish"
 	public void processFinish(MessageForm message)
 	{
-		((MyMessage)message).getNurse().setAvailable(mySim().currentTime());
+		finishWork(((MyMessage)message).getNurse());
+		//((MyMessage)message).getNurse().setAvailable(mySim().currentTime());
 		myAgent().getWaitingTimeStat().addSample(((MyMessage)message).getTotalWaitingVacc());
 
 		Nurse nurse = getAvailableNurse();
@@ -60,7 +58,7 @@ public class VaccinationManager extends Manager
 	}
 
 	//meta! sender="VaccinationCenterAgent", id="21", type="Request"
-	public void processVaccinationRRVaccinationCenterAgent(MessageForm message)
+	public void processVaccinationRR(MessageForm message)
 	{
 		Nurse nurse = getAvailableNurse();
 		if(nurse == null || myAgent().getCustomersQueue().size() > 0) {
@@ -84,8 +82,13 @@ public class VaccinationManager extends Manager
 	{
 	}
 
-	//meta! sender="VaccinationFillAgent", id="55", type="Response"
+	//meta! userInfo="Removed from model"
 	public void processVaccinationRRVaccinationFillAgent(MessageForm message)
+	{
+	}
+
+	//meta! sender="VaccRefillTransitionAgent", id="95", type="Response"
+	public void processRefillRR(MessageForm message)
 	{
 	}
 
@@ -99,25 +102,20 @@ public class VaccinationManager extends Manager
 	{
 		switch (message.code())
 		{
+		case Mc.vaccinationRR:
+			processVaccinationRR(message);
+		break;
+
 		case Mc.lunchRR:
 			processLunchRR(message);
 		break;
 
-		case Mc.vaccinationRR:
-			switch (message.sender().id())
-			{
-			case Id.vaccinationFillAgent:
-				processVaccinationRRVaccinationFillAgent(message);
-			break;
-
-			case Id.vaccinationCenterAgent:
-				processVaccinationRRVaccinationCenterAgent(message);
-			break;
-			}
-		break;
-
 		case Mc.finish:
 			processFinish(message);
+		break;
+
+		case Mc.refillRR:
+			processRefillRR(message);
 		break;
 
 		default:
@@ -157,5 +155,18 @@ public class VaccinationManager extends Manager
 			}
 		}
 		return null;
+	}
+
+	private void finishWork(Nurse nurse) {
+//		if(nurse.getInjections() > 0)
+//		{
+			nurse.setAvailable(mySim().currentTime());
+			return;
+//		}
+//		MyMessage message = new MyMessage(mySim());
+//		message.setCode(Mc.refillRR);
+//		message.setAddressee(mySim().findAgent(Id.vaccRefillTransitionAgent));
+//
+//		request(message);
 	}
 }

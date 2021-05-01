@@ -6,10 +6,10 @@ import managers.*;
 import continualAssistants.*;
 import instantAssistants.*;
 
-//meta! id="52"
-public class VaccinationFillAgent extends Agent
+//meta! id="93"
+public class VaccRefillTransitionAgent extends Agent
 {
-	public VaccinationFillAgent(int id, Simulation mySim, Agent parent)
+	public VaccRefillTransitionAgent(int id, Simulation mySim, Agent parent)
 	{
 		super(id, mySim, parent);
 		init();
@@ -25,8 +25,7 @@ public class VaccinationFillAgent extends Agent
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	private void init()
 	{
-		new VaccinationFillManager(Id.vaccinationFillManager, mySim(), this);
-		new VaccinationFillProcess(Id.vaccinationFillProcess, mySim(), this);
+		new VaccRefillTransitionManager(Id.vaccRefillTransitionManager, mySim(), this);
 		addOwnMessage(Mc.refillRR);
 	}
 	//meta! tag="end"
