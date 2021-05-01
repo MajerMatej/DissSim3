@@ -40,7 +40,8 @@ public class Id extends IdList
 	public static final int customerArrivalScheduler = 1001;
 	public static final int registrationProcess = 1002;
 	public static final int examinationProces = 1003;
-	public static final int refillTransitionProcess = 1012;
+	public static final int vaccRefillTransitionProcess = 1012;
+	public static final int refillVaccTransitionProcess = 1013;
 	public static final int vaccinationProcess = 1004;
 	public static final int waitingProcess = 1005;
 	//meta! tag="end"

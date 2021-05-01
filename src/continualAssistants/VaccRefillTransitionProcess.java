@@ -7,10 +7,10 @@ import agents.*;
 import OSPABA.Process;
 
 //meta! id="97"
-public class RefillTransitionProcess extends Process
+public class VaccRefillTransitionProcess extends Process
 {
 	private static UniformContinuousRNG m_gen = new UniformContinuousRNG(10.0, 18.0);
-	public RefillTransitionProcess(int id, Simulation mySim, CommonAgent myAgent)
+	public VaccRefillTransitionProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
 	}

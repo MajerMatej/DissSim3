@@ -39,8 +39,12 @@ public class VaccinationManager extends Manager
 	//meta! sender="VaccinationProcess", id="37", type="Finish"
 	public void processFinish(MessageForm message)
 	{
+		if(((MyMessage)message).getNurse() == null)
+		{
+			System.out.println("kokooot");
+		}
 		finishWork(((MyMessage)message).getNurse());
-		//((MyMessage)message).getNurse().setAvailable(mySim().currentTime());
+//		((MyMessage)message).getNurse().setAvailable(mySim().currentTime());
 		myAgent().getWaitingTimeStat().addSample(((MyMessage)message).getTotalWaitingVacc());
 
 		Nurse nurse = getAvailableNurse();
@@ -90,6 +94,7 @@ public class VaccinationManager extends Manager
 	//meta! sender="VaccRefillTransitionAgent", id="95", type="Response"
 	public void processRefillRR(MessageForm message)
 	{
+		((MyMessage)message).getRefillNurse().setAvailable(mySim().currentTime());
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -158,12 +163,17 @@ public class VaccinationManager extends Manager
 	}
 
 	private void finishWork(Nurse nurse) {
+		if(nurse == null)
+		{
+			System.out.println("pica");
+		}
 		if(nurse.getInjections() > 0)
 		{
 			nurse.setAvailable(mySim().currentTime());
 			return;
 		}
 		MyMessage message = new MyMessage(mySim());
+		message.setRefillNurse(nurse);
 		message.setCode(Mc.refillRR);
 		message.setAddressee(mySim().findAgent(Id.vaccRefillTransitionAgent));
 

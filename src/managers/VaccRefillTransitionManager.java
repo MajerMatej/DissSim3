@@ -31,14 +31,14 @@ public class VaccRefillTransitionManager extends Manager
 	//meta! sender="VaccinationFillAgent", id="55", type="Response"
 	public void processRefillRRVaccinationFillAgent(MessageForm message)
 	{
-		message.setAddressee(myAgent().findAssistant(Id.refillTransitionProcess));
+		message.setAddressee(myAgent().findAssistant(Id.refillVaccTransitionProcess));
 		startContinualAssistant(message);
 	}
 
 	//meta! sender="VaccinationAgent", id="95", type="Request"
 	public void processRefillRRVaccinationAgent(MessageForm message)
 	{
-		message.setAddressee(myAgent().findAssistant(Id.refillTransitionProcess));
+		message.setAddressee(myAgent().findAssistant(Id.vaccRefillTransitionProcess));
 		startContinualAssistant(message);
 	}
 
@@ -50,24 +50,22 @@ public class VaccRefillTransitionManager extends Manager
 		}
 	}
 
-	//meta! sender="RefillTransitionProcess", id="98", type="Finish"
-	public void processFinish(MessageForm message)
+	//meta! sender="VaccRefillTransitionProcess", id="98", type="Finish"
+	public void processFinishVaccRefillTransitionProcess(MessageForm message)
 	{
 
 		message.setAddressee(mySim().findAgent(Id.vaccinationFillAgent));
-		message.setAddressee(Mc.refillRR);
+		message.setCode(Mc.refillRR);
 
-		switch (message.sender().id())
-		{
-			case Id.vaccinationFillAgent:
-				response(message);
-				break;
+		request(message);
+	}
 
-			case Id.vaccinationAgent:
-				request(message);
-				break;
-		}
+	//meta! sender="RefillVaccTransitionProcess", id="100", type="Finish"
+	public void processFinishRefillVaccTransitionProcess(MessageForm message)
+	{
+		message.setCode(Mc.refillRR);
 
+		response(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -81,7 +79,16 @@ public class VaccRefillTransitionManager extends Manager
 		switch (message.code())
 		{
 		case Mc.finish:
-			processFinish(message);
+			switch (message.sender().id())
+			{
+			case Id.vaccRefillTransitionProcess:
+				processFinishVaccRefillTransitionProcess(message);
+			break;
+
+			case Id.refillVaccTransitionProcess:
+				processFinishRefillVaccTransitionProcess(message);
+			break;
+			}
 		break;
 
 		case Mc.refillRR:

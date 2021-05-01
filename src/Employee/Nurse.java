@@ -42,4 +42,9 @@ public class Nurse extends Employee {
     public void setFillWaitingTimeTotal(double fillWaitingTimeTotal) {
         this.m_fillWaitingTimeTotal = fillWaitingTimeTotal;
     }
+
+    public void refillInjections()
+    {
+        m_injections = 20;
+    }
 }

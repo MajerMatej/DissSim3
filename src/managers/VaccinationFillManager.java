@@ -30,6 +30,9 @@ public class VaccinationFillManager extends Manager
 	//meta! sender="VaccRefillTransitionAgent", id="55", type="Request"
 	public void processRefillRR(MessageForm message)
 	{
+		((MyMessage)message).getRefillNurse().refillInjections();
+		message.setAddressee(myAgent().findAssistant(Id.vaccinationFillProcess));
+		startContinualAssistant(message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -43,6 +46,8 @@ public class VaccinationFillManager extends Manager
 	//meta! sender="VaccinationFillProcess", id="78", type="Finish"
 	public void processFinish(MessageForm message)
 	{
+		message.setCode(Mc.refillRR);
+		response(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

@@ -1,17 +1,16 @@
 package continualAssistants;
 
 import OSPABA.*;
-import OSPRNG.TriangularRNG;
+import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
 import OSPABA.Process;
 
-//meta! id="77"
-public class VaccinationFillProcess extends Process
+//meta! id="99"
+public class RefillVaccTransitionProcess extends Process
 {
-//	min = 6 s, max = 40 s, modus = 10 s (
-	private static TriangularRNG m_gen = new TriangularRNG(6.0, 10.0, 40.0);
-	public VaccinationFillProcess(int id, Simulation mySim, CommonAgent myAgent)
+	private static UniformContinuousRNG m_gen = new UniformContinuousRNG(10.0, 18.0);
+	public RefillVaccTransitionProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
 	}
@@ -23,15 +22,11 @@ public class VaccinationFillProcess extends Process
 		// Setup component for the next replication
 	}
 
-	//meta! sender="VaccinationFillAgent", id="78", type="Start"
+	//meta! sender="VaccRefillTransitionAgent", id="100", type="Start"
 	public void processStart(MessageForm message)
 	{
-		double timeToFill = 0.0;
-		for(int i = 0; i < 1; i++) {
-			timeToFill += m_gen.sample();
-		}
 		message.setCode(Mc.finish);
-		hold(timeToFill, message);
+		hold(m_gen.sample(), message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -63,9 +58,9 @@ public class VaccinationFillProcess extends Process
 	//meta! tag="end"
 
 	@Override
-	public VaccinationFillAgent myAgent()
+	public VaccRefillTransitionAgent myAgent()
 	{
-		return (VaccinationFillAgent)super.myAgent();
+		return (VaccRefillTransitionAgent)super.myAgent();
 	}
 
 }
