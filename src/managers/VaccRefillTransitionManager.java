@@ -31,11 +31,15 @@ public class VaccRefillTransitionManager extends Manager
 	//meta! sender="VaccinationFillAgent", id="55", type="Response"
 	public void processRefillRRVaccinationFillAgent(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.refillTransitionProcess));
+		startContinualAssistant(message);
 	}
 
 	//meta! sender="VaccinationAgent", id="95", type="Request"
 	public void processRefillRRVaccinationAgent(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.refillTransitionProcess));
+		startContinualAssistant(message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -44,6 +48,26 @@ public class VaccRefillTransitionManager extends Manager
 		switch (message.code())
 		{
 		}
+	}
+
+	//meta! sender="RefillTransitionProcess", id="98", type="Finish"
+	public void processFinish(MessageForm message)
+	{
+
+		message.setAddressee(mySim().findAgent(Id.vaccinationFillAgent));
+		message.setAddressee(Mc.refillRR);
+
+		switch (message.sender().id())
+		{
+			case Id.vaccinationFillAgent:
+				response(message);
+				break;
+
+			case Id.vaccinationAgent:
+				request(message);
+				break;
+		}
+
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -56,6 +80,10 @@ public class VaccRefillTransitionManager extends Manager
 	{
 		switch (message.code())
 		{
+		case Mc.finish:
+			processFinish(message);
+		break;
+
 		case Mc.refillRR:
 			switch (message.sender().id())
 			{

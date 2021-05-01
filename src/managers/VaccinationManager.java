@@ -158,15 +158,15 @@ public class VaccinationManager extends Manager
 	}
 
 	private void finishWork(Nurse nurse) {
-//		if(nurse.getInjections() > 0)
-//		{
+		if(nurse.getInjections() > 0)
+		{
 			nurse.setAvailable(mySim().currentTime());
 			return;
-//		}
-//		MyMessage message = new MyMessage(mySim());
-//		message.setCode(Mc.refillRR);
-//		message.setAddressee(mySim().findAgent(Id.vaccRefillTransitionAgent));
-//
-//		request(message);
+		}
+		MyMessage message = new MyMessage(mySim());
+		message.setCode(Mc.refillRR);
+		message.setAddressee(mySim().findAgent(Id.vaccRefillTransitionAgent));
+
+		request(message);
 	}
 }

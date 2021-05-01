@@ -26,6 +26,7 @@ public class VaccRefillTransitionAgent extends Agent
 	private void init()
 	{
 		new VaccRefillTransitionManager(Id.vaccRefillTransitionManager, mySim(), this);
+		new RefillTransitionProcess(Id.refillTransitionProcess, mySim(), this);
 		addOwnMessage(Mc.refillRR);
 	}
 	//meta! tag="end"
