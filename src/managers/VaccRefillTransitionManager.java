@@ -32,6 +32,7 @@ public class VaccRefillTransitionManager extends Manager
 	public void processRefillRRVaccinationFillAgent(MessageForm message)
 	{
 		message.setAddressee(myAgent().findAssistant(Id.refillVaccTransitionProcess));
+		((MyMessage)message).getRefillNurse().goBackFromRefill();
 		startContinualAssistant(message);
 	}
 
@@ -39,6 +40,7 @@ public class VaccRefillTransitionManager extends Manager
 	public void processRefillRRVaccinationAgent(MessageForm message)
 	{
 		message.setAddressee(myAgent().findAssistant(Id.vaccRefillTransitionProcess));
+		((MyMessage)message).getRefillNurse().goRefillInjections();
 		startContinualAssistant(message);
 	}
 

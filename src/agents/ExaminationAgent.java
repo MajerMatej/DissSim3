@@ -34,7 +34,7 @@ public class ExaminationAgent extends Agent
 		m_waitingTimeStat = new Stat();
 		m_doctors = new LinkedList<>();
 		for(int i = 0; i < ((MySimulation)mySim()).getNumOfDoctors(); i++) {
-			m_doctors.add(new Doctor());
+			m_doctors.add(new Doctor(i + 1));
 		}
 	}
 

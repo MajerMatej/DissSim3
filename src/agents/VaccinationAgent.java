@@ -34,7 +34,7 @@ public class VaccinationAgent extends Agent
 		m_waitingTimeStat = new Stat();
 		m_nurses = new LinkedList<>();
 		for(int i = 0; i < ((MySimulation)mySim()).getNumOfNurses(); i++) {
-			m_nurses.add(new Nurse());
+			m_nurses.add(new Nurse(i + 1));
 		}
 	}
 

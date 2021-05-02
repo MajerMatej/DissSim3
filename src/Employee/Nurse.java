@@ -1,8 +1,11 @@
 package Employee;
 
 public class Nurse extends Employee {
-    public Nurse() {
-        m_injections = 20;
+    private final int m_maxInjections = 1;
+    public Nurse(int id) {
+        super(id);
+
+        m_injections = m_maxInjections;
         m_fillWaitingTimeStart = 0.0;
         m_fillWaitingTimeTotal = 0.0;
     }
@@ -13,7 +16,7 @@ public class Nurse extends Employee {
 
     @Override
     public String toStringWithTime(double time) {
-        String str = "Nurse " + super.toStringWithTime(time);
+        String str = "Nurse" + getID() + " " + super.toStringWithTime(time) + " injections: " + getInjections();
         return str;
     }
 
@@ -43,8 +46,24 @@ public class Nurse extends Employee {
         this.m_fillWaitingTimeTotal = fillWaitingTimeTotal;
     }
 
+    public void goRefillInjections()
+    {
+        m_state = EmployeeState.GOING_TO_REFILL;
+    }
+
+    public void goBackFromRefill()
+    {
+        m_state = EmployeeState.GOING_BACK_FROM_REFILL;
+    }
+
+    public void waitForRefill()
+    {
+        m_state = EmployeeState.WAITING_FOR_REFILL;
+    }
+
     public void refillInjections()
     {
-        m_injections = 20;
+        m_state = EmployeeState.REFILLING;
+        m_injections = m_maxInjections;
     }
 }

@@ -35,7 +35,7 @@ public class RegistrationAgent extends Agent
 		m_waitingTimeStat = new Stat();
 		m_adminWorkers = new LinkedList<>();
 		for(int i = 0; i < ((MySimulation)mySim()).getNumOfAdminWorkers(); i++) {
-			m_adminWorkers.add(new AdminWorker());
+			m_adminWorkers.add(new AdminWorker(i + 1));
 		}
 	}
 

@@ -1,8 +1,6 @@
 package VaccinationCenter.GUI;
 
-import Employee.AdminWorker;
-import Employee.Doctor;
-import Employee.Nurse;
+import Employee.*;
 import OSPABA.ISimDelegate;
 import OSPABA.SimState;
 import OSPABA.Simulation;
@@ -25,7 +23,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -74,7 +71,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
     private JTabbedPane QueueStats;
     private JPanel customersTab;
     private JList list2;
-    private JTable empTable;
+    private JTable workTable;
     private JLabel customersLabel;
     private JTextField customersTF;
     private JTextField exp2CustTF;
@@ -103,12 +100,16 @@ public class MainWindow extends JFrame implements ISimDelegate {
     private JLabel vaccUtilCI;
     private JLabel vaccAvgRefillWT;
     private JLabel vaccRefillCI;
+    private JTable doctorTable;
+    private JTable nurseTable;
     private JPanel chartTab;
 
     private int m_workers;
     private int m_doctors;
     private int m_nurses;
-    private DefaultTableModel tableModel;
+    private DefaultTableModel workTableModel;
+    private DefaultTableModel docTableModel;
+    private DefaultTableModel nursTableModel;
     private  XYSeries xyseries;
     private XYSeriesCollection datasetXY;
     JFreeChart chart;
@@ -133,12 +134,15 @@ public class MainWindow extends JFrame implements ISimDelegate {
         pauseBTN.setEnabled(false);
         systemTime = 8*60*60.0;
 
-        String[] columnNames = {"Employee", "Available", "Utilization", "Serviced"};
-        tableModel = new DefaultTableModel(columnNames, m_workers + m_nurses + m_doctors);
+        String[] columnNames = {"Employee", "Status", "Utilization", "Serviced"};
+        workTableModel = new DefaultTableModel(columnNames, m_workers);
+        docTableModel = new DefaultTableModel(columnNames, m_doctors);
+        nursTableModel = new DefaultTableModel(columnNames, m_nurses);
+
         tableModelEXP2 = new DefaultTableModel(columnNames, 3);
 
         //JTableHeader header = new JTableHeader(columnNames, 3);
-        exp2Table.setModel(tableModel);
+        //exp2Table.setModel(tableModel);
         //exp2Table.setAutoCreateRowSorter(true);
 
         m_workers = 1;
@@ -166,6 +170,10 @@ public class MainWindow extends JFrame implements ISimDelegate {
         ChartPanel chartPanel = new ChartPanel(chart, false);
         chartPanel.setPreferredSize(new Dimension(450, 300));
         chartPane.add(chartPanel);
+        workTable.setDefaultRenderer(Object.class, new CustomCellRenderer());
+        doctorTable.setDefaultRenderer(Object.class, new CustomCellRenderer());
+        nurseTable.setDefaultRenderer(Object.class, new CustomCellRendererNurse());
+
 
         runBTN.addActionListener(new ActionListener() {
             @Override
@@ -173,8 +181,17 @@ public class MainWindow extends JFrame implements ISimDelegate {
                 m_workers = Integer.parseInt(adminWorkTF.getText());
                 m_doctors = Integer.parseInt(doctorsTF.getText());
                 m_nurses = Integer.parseInt(nursesTF.getText());
-                String[] columnNames = {"Employee", "Available", "Utilization", "Serviced"};
-                tableModel = new DefaultTableModel(columnNames, m_workers + m_nurses + m_doctors);
+                String[] columnNames = {"Employee", "Status", "Utilization", "Serviced",
+                        "Available", "Occupied", "To lunch", "Eating", "From lunch"};
+
+                workTableModel = new DefaultTableModel(columnNames, m_workers);
+                docTableModel = new DefaultTableModel(columnNames, m_doctors);
+
+                String[] columnNamesNurse = {"Employee", "Status", "Utilization", "Serviced", "Injections",
+                        "Available", "Occupied", "To lunch", "Eating", "From lunch", "To refill", "Waiting",
+                        "Refilling", "From refill"};
+                nursTableModel = new DefaultTableModel(columnNamesNurse, m_nurses);
+
                 if(running) {
                     app.stopSim();
                     runBTN.setText("Run");
@@ -296,23 +313,30 @@ public class MainWindow extends JFrame implements ISimDelegate {
         app.run();
     }
 
-    private void refreshEmployees(LinkedList<String> employees) {
+    private void refreshEmployees(LinkedList<String> employees, DefaultTableModel tableModel, boolean isItNurse) {
 
         int i = 0;
         int j = 0;
+        int stateIndex = -1;
         try {
             for (String string : employees) {
-                for (Object obj : parseEmployeeToRow(string)) {
+                for (Object obj : (isItNurse) ? parseNurseToRow(string) : parseEmployeeToRow(string)) {
                     tableModel.setValueAt(obj, i, j);
+                    if(j == 1)
+                    {
+                        updateStateCells((String)obj, tableModel, i);
+                    }
+
                     j++;
                 }
+
                 j = 0;
                 i++;
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("Hallo" + e.toString());
         }
-        empTable.setModel(tableModel);
+        //vaccTable.setModel(tableModel);
 
     }
 
@@ -321,6 +345,13 @@ public class MainWindow extends JFrame implements ISimDelegate {
         String delims = "[ ]+";
         String[] tokens = string.split(delims);
         return new Object[]{tokens[0], tokens[4], tokens[2], tokens[6]};
+    }
+
+    private Object[] parseNurseToRow(String string) {
+        //String phrase = "the music made   it   hard      to        concentrate";
+        String delims = "[ ]+";
+        String[] tokens = string.split(delims);
+        return new Object[]{tokens[0], tokens[4], tokens[2], tokens[6], tokens[8]};
     }
 
     private Object[] parseExp2(String string) {
@@ -349,6 +380,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
         plot.setDomainAxis(xAxis);
 
         tableModelEXP3.addRow(new Object[]{docs, pplInQ});
+
     }
 
 
@@ -416,23 +448,32 @@ public class MainWindow extends JFrame implements ISimDelegate {
                     / sim.currentTime()));
 
 
-            LinkedList<String> employeeTable = new LinkedList<>();
+            LinkedList<String> workers = new LinkedList<>();
             for (AdminWorker worker: sim.registrationAgent().getAdminWorkers()) {
-                employeeTable.add(worker.toStringWithTime(sim.currentTime()));
+                workers.add(worker.toStringWithTime(sim.currentTime()));
             }
 
+            refreshEmployees(workers, workTableModel, false);
+            workTable.setModel(workTableModel);
+
+            LinkedList<String> doctors = new LinkedList<>();
             for (Doctor doctor: sim.examinationAgent().getDoctors()) {
-                employeeTable.add(doctor.toStringWithTime(sim.currentTime()));
+                doctors.add(doctor.toStringWithTime(sim.currentTime()));
             }
 
+            refreshEmployees(doctors, docTableModel, false);
+            doctorTable.setModel(docTableModel);
+
+            LinkedList<String> nurses = new LinkedList<>();
             for (Nurse nurse: sim.vaccinationAgent().getNurses()) {
-                employeeTable.add(nurse.toStringWithTime(sim.currentTime()));
+                nurses.add(nurse.toStringWithTime(sim.currentTime()));
             }
 
-            refreshEmployees(employeeTable);
+            refreshEmployees(nurses, nursTableModel, true);
+            nurseTable.setModel(nursTableModel);
 
         }catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("PEnis" + e.toString());
         }
     }
 
@@ -456,7 +497,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
             avgPplInWRL.setText(String.format("%.4f ", sim.getAvgCustomersWR().mean()));
             updateConfidenceIntervals(simulation);
         }catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("Stopped: " + e.toString());
         }
 
     }
@@ -518,5 +559,112 @@ public class MainWindow extends JFrame implements ISimDelegate {
                     sim.getNurseUtil().confidenceInterval_95()[0],
                     sim.getNurseUtil().confidenceInterval_95()[1]));
         }
+    }
+
+    public void updateStateCells(String stringState, DefaultTableModel tableModel, int row) {
+
+        EmployeeState state;
+        try {
+            state = EmployeeState.valueOf(stringState.toString());
+        } catch (Exception e) {
+            return;
+        }
+        for(int i = (tableModel == nursTableModel)? 5 : 4; i < tableModel.getColumnCount(); i++) {
+            tableModel.setValueAt(" ", row, i);
+        }
+        int stateIndex = -1;
+
+        if (state != null) {
+            switch (state) {
+                case AVAILABLE:
+                    stateIndex = 4;
+                    break;
+                case OCCUPIED:
+                    stateIndex = 5;
+                    break;
+                case GOING_TO_REFILL:
+                    stateIndex = 9;
+                    break;
+                case WAITING_FOR_REFILL:
+                    stateIndex = 10;
+                    break;
+                case REFILLING:
+                    stateIndex = 11;
+                    break;
+                case GOING_BACK_FROM_REFILL:
+                    stateIndex = 12;
+                    break;
+            }
+        }
+        if(stateIndex != -1) {
+            if(tableModel == nursTableModel) {
+                stateIndex++;
+            }
+            tableModel.setValueAt("☺", row, stateIndex);
+        }
+        return;
+    }
+
+    public class CustomCellRendererNurse extends DefaultTableCellRenderer {
+            public Component getTableCellRendererComponent(JTable table,
+                                                       Object value, boolean isSelected, boolean hasFocus,
+                                                       int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setBackground(Color.WHITE);
+
+            if(value == "☺")
+            {
+
+                switch (column)
+                {
+                    case 5:
+                        c.setBackground(Color.GREEN);
+                        break;
+                    case 6:
+                        c.setBackground(Color.RED);
+                        break;
+                    case 12:
+                        c.setBackground(Color.ORANGE);
+                        break;
+                    default:
+                        c.setBackground(Color.YELLOW);
+                }
+
+            }
+            super.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+            return c;
+        }
+
+    }
+    public class CustomCellRenderer extends DefaultTableCellRenderer {
+        public Component getTableCellRendererComponent(JTable table,
+                                                       Object value, boolean isSelected, boolean hasFocus,
+                                                       int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            c.setBackground(Color.WHITE);
+
+            if(value == "☺")
+            {
+
+                switch (column)
+                {
+                    case 4:
+                        c.setBackground(Color.GREEN);
+                        break;
+                    case 5:
+                        c.setBackground(Color.RED);
+                        break;
+//                    case 11:
+//                        c.setBackground(Color.ORANGE);
+//                        break;
+                    default:
+                        c.setBackground(Color.ORANGE);
+                }
+
+            }
+            super.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+            return c;
+        }
+
     }
 }

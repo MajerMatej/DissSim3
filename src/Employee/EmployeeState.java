@@ -1,0 +1,13 @@
+package Employee;
+
+public enum EmployeeState {
+    AVAILABLE,
+    OCCUPIED,
+    GOING_TO_LUNCH,
+    EATING_LUNCH,
+    GOING_BACK_FROM_LUNCH,
+    GOING_TO_REFILL,
+    WAITING_FOR_REFILL,
+    REFILLING,
+    GOING_BACK_FROM_REFILL
+}
