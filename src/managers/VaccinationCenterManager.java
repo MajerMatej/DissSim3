@@ -88,19 +88,18 @@ public class VaccinationCenterManager extends Manager
 		request(message);
 	}
 
-	//meta! sender="WaitTransitionAgent", id="69", type="Request"
-	public void processLunchRRWaitTransitionAgent(MessageForm message)
-	{
-	}
-
 	//meta! sender="VaccinationAgent", id="65", type="Request"
 	public void processLunchRRVaccinationAgent(MessageForm message)
 	{
+		message.setAddressee(mySim().findAgent(Id.lunchTransitionAgent));
+		request(message);
 	}
 
 	//meta! sender="ExaTransitionAgent", id="64", type="Request"
 	public void processLunchRRExaTransitionAgent(MessageForm message)
 	{
+		message.setAddressee(mySim().findAgent(Id.lunchTransitionAgent));
+		request(message);
 	}
 
 	//meta! sender="LunchTransitionAgent", id="84", type="Response"
@@ -142,10 +141,6 @@ public class VaccinationCenterManager extends Manager
 
 			case Id.exaTransitionAgent:
 				processLunchRRExaTransitionAgent(message);
-			break;
-
-			case Id.waitTransitionAgent:
-				processLunchRRWaitTransitionAgent(message);
 			break;
 
 			case Id.registrationAgent:

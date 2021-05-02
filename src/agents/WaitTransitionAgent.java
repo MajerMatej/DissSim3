@@ -28,7 +28,6 @@ public class WaitTransitionAgent extends Agent
 		new WaitTransitionManager(Id.waitTransitionManager, mySim(), this);
 		new VaccWaitTransitionProcess(Id.vaccWaitTransitionProcess, mySim(), this);
 		addOwnMessage(Mc.waitingRR);
-		addOwnMessage(Mc.lunchRR);
 	}
 	//meta! tag="end"
 }

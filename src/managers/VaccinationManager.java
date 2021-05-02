@@ -86,11 +86,6 @@ public class VaccinationManager extends Manager
 	{
 	}
 
-	//meta! userInfo="Removed from model"
-	public void processVaccinationRRVaccinationFillAgent(MessageForm message)
-	{
-	}
-
 	//meta! sender="VaccRefillTransitionAgent", id="107", type="Response"
 	public void processRefillRR(MessageForm message)
 	{
