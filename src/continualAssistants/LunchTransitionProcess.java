@@ -1,6 +1,7 @@
 package continualAssistants;
 
 import OSPABA.*;
+import OSPRNG.UniformContinuousRNG;
 import simulation.*;
 import agents.*;
 import OSPABA.Process;
@@ -8,6 +9,7 @@ import OSPABA.Process;
 //meta! id="87"
 public class LunchTransitionProcess extends Process
 {
+	private static UniformContinuousRNG m_gen = new UniformContinuousRNG(70.0, 200.0);
 	public LunchTransitionProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);

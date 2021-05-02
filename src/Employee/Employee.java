@@ -8,6 +8,7 @@ public abstract class Employee {
 
     private int m_servicedCustomers;
     private int m_id;
+    private boolean m_hadLunchBreak = false;
 
     public Employee(int id) {
         m_availability = true;
@@ -16,6 +17,7 @@ public abstract class Employee {
         m_servicedCustomers = 0;
         m_state = EmployeeState.AVAILABLE;
         m_id = id;
+        m_hadLunchBreak = false;
     }
 
     public boolean isAvailable() {
@@ -55,4 +57,21 @@ public abstract class Employee {
     protected int getID() {
         return m_id;
     }
+
+    public void goToLunch()
+    {
+        m_state = EmployeeState.GOING_TO_LUNCH;
+    }
+
+    public void eat()
+    {
+        m_state = EmployeeState.EATING_LUNCH;
+        m_hadLunchBreak = true;
+    }
+
+    public void goBackFromLunch()
+    {
+        m_state = EmployeeState.GOING_BACK_FROM_LUNCH;
+    }
+
 }

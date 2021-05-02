@@ -9,7 +9,6 @@ import OSPABA.Process;
 //meta! id="77"
 public class VaccinationFillProcess extends Process
 {
-//	min = 6 s, max = 40 s, modus = 10 s (
 	private static TriangularRNG m_gen = new TriangularRNG(6.0, 10.0, 40.0);
 	public VaccinationFillProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{

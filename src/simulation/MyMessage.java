@@ -2,6 +2,7 @@ package simulation;
 
 import Employee.AdminWorker;
 import Employee.Doctor;
+import Employee.Employee;
 import Employee.Nurse;
 import OSPABA.*;
 
@@ -26,6 +27,8 @@ public class MyMessage extends MessageForm
 	private double m_startWaitingRefill;
 	private double m_totalWaitingRefill;
 	private Nurse m_refillNurse;
+
+	private Employee m_lunchEmployee;
 
 	public MyMessage(Simulation sim)
 	{
@@ -184,5 +187,13 @@ public class MyMessage extends MessageForm
 
 	public void setRefillNurse(Nurse refillNurse) {
 		this.m_refillNurse = refillNurse;
+	}
+
+	public Employee getLunchEmployee() {
+		return m_lunchEmployee;
+	}
+
+	public void setLunchEmployee(Employee lunchEmployee) {
+		this.m_lunchEmployee = lunchEmployee;
 	}
 }

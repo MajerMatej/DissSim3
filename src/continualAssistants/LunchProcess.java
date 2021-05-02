@@ -1,6 +1,7 @@
 package continualAssistants;
 
 import OSPABA.*;
+import OSPRNG.TriangularRNG;
 import simulation.*;
 import agents.*;
 import OSPABA.Process;
@@ -8,7 +9,7 @@ import OSPABA.Process;
 //meta! id="80"
 public class LunchProcess extends Process
 {
-	public LunchProcess(int id, Simulation mySim, CommonAgent myAgent)
+	private static TriangularRNG m_gen = new TriangularRNG(5.0,15.0,30.0);	public LunchProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
 	}
