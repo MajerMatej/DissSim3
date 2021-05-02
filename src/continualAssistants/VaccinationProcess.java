@@ -10,7 +10,7 @@ import OSPABA.Process;
 //meta! id="36"
 public class VaccinationProcess extends Process
 {
-	private static TriangularRNG m_gen = new TriangularRNG(20.0,100.0,75.0);
+	private static TriangularRNG m_gen = new TriangularRNG(20.0,75.0,100.0);
 
 	public VaccinationProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{

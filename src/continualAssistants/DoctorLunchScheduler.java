@@ -22,6 +22,8 @@ public class DoctorLunchScheduler extends Scheduler
 	//meta! sender="ExaminationAgent", id="114", type="Start"
 	public void processStart(MessageForm message)
 	{
+		message.setCode(Mc.finish);
+		hold(3 * 60 * 60.0 + 45 * 60, message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -29,6 +31,9 @@ public class DoctorLunchScheduler extends Scheduler
 	{
 		switch (message.code())
 		{
+			case Mc.finish:
+				assistantFinished(message);
+				break;
 		}
 	}
 

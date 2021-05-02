@@ -103,8 +103,9 @@ public class VaccinationCenterManager extends Manager
 	}
 
 	//meta! sender="LunchTransitionAgent", id="84", type="Response"
-	public void processRequestResponse(MessageForm message)
+	public void processLunchRRLunchTransitionAgent(MessageForm message)
 	{
+		response(message);
 	}
 
 	//meta! sender="ModelAgent", id="119", type="Notice"
@@ -139,6 +140,10 @@ public class VaccinationCenterManager extends Manager
 				processLunchRRVaccinationAgent(message);
 			break;
 
+			case Id.lunchTransitionAgent:
+				processLunchRRLunchTransitionAgent(message);
+			break;
+
 			case Id.exaTransitionAgent:
 				processLunchRRExaTransitionAgent(message);
 			break;
@@ -147,10 +152,6 @@ public class VaccinationCenterManager extends Manager
 				processLunchRRRegistrationAgent(message);
 			break;
 			}
-		break;
-
-		case Mc.requestResponse:
-			processRequestResponse(message);
 		break;
 
 		case Mc.waitingRR:

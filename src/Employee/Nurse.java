@@ -1,7 +1,7 @@
 package Employee;
 
 public class Nurse extends Employee {
-    private final int m_maxInjections = 1;
+    private final int m_maxInjections = 20;
     public Nurse(int id) {
         super(id);
 
@@ -65,5 +65,10 @@ public class Nurse extends Employee {
     {
         m_state = EmployeeState.REFILLING;
         m_injections = m_maxInjections;
+    }
+
+    public int getMaxInjections()
+    {
+        return m_maxInjections;
     }
 }

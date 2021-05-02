@@ -14,7 +14,6 @@ public class Mc extends IdList
 	public static final int customerLeftNotice = 1008;
 	public static final int refillRR = 1013;
 	public static final int lunchRR = 1015;
-	public static final int requestResponse = 1022;
 	public static final int startNotice = 1024;
 	//meta! tag="end"
 

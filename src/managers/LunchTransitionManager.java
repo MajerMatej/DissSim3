@@ -28,13 +28,19 @@ public class LunchTransitionManager extends Manager
 	}
 
 	//meta! sender="LunchAgent", id="62", type="Response"
-	public void processLunchRR(MessageForm message)
+	public void processLunchRRLunchAgent(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.lunchTransitionProcess));
+		((MyMessage)message).getLunchEmployee().goBackFromLunch();
+		startContinualAssistant(message);
 	}
 
 	//meta! sender="VaccinationCenterAgent", id="84", type="Request"
-	public void processRequestResponse(MessageForm message)
+	public void processLunchRRVaccinationCenterAgent(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.lunchTransitionProcess));
+		((MyMessage)message).getLunchEmployee().goToLunch();
+		startContinualAssistant(message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -48,6 +54,15 @@ public class LunchTransitionManager extends Manager
 	//meta! sender="LunchTransitionProcess", id="88", type="Finish"
 	public void processFinish(MessageForm message)
 	{
+		if(((MyMessage)message).getLunchEmployee().hadLunchBreak())
+		{
+			message.setCode(Mc.lunchRR);
+			response(message);
+			return;
+		}
+		message.setAddressee(mySim().findAgent(Id.lunchAgent));
+		message.setCode(Mc.lunchRR);
+		request(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -60,12 +75,17 @@ public class LunchTransitionManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.requestResponse:
-			processRequestResponse(message);
-		break;
-
 		case Mc.lunchRR:
-			processLunchRR(message);
+			switch (message.sender().id())
+			{
+			case Id.vaccinationCenterAgent:
+				processLunchRRVaccinationCenterAgent(message);
+			break;
+
+			case Id.lunchAgent:
+				processLunchRRLunchAgent(message);
+			break;
+			}
 		break;
 
 		case Mc.finish:

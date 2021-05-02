@@ -80,6 +80,7 @@ public class RegistrationManager extends Manager
 	//meta! sender="VaccinationCenterAgent", id="61", type="Response"
 	public void processLunchRR(MessageForm message)
 	{
+		((MyMessage)message).getLunchEmployee().setAvailable(mySim().currentTime());
 	}
 
 	//meta! sender="WorkerLunchScheduler", id="112", type="Finish"
@@ -89,10 +90,11 @@ public class RegistrationManager extends Manager
 		int i = 0;
 		LinkedList<AdminWorker> availableWorkers = myAgent().getAvailableAdminWorkers();
 		for (AdminWorker worker: availableWorkers) {
-			if(i < ((myAgent().getAvailableAdminWorkers().size() + 1) / 2.0))
+			if(i < ((myAgent().getAvailableAdminWorkers().size()) / 2.0))
 			{
 				MyMessage newMessage = new MyMessage(mySim());
-				newMessage.setCode(Id.lunchAgent);
+				newMessage.setLunchEmployee(worker);
+				newMessage.setCode(Mc.lunchRR);
 				newMessage.setAddressee(mySim().findAgent(Id.vaccinationCenterAgent));
 				request(newMessage);
 			}

@@ -30,6 +30,9 @@ public class LunchManager extends Manager
 	//meta! sender="LunchTransitionAgent", id="62", type="Request"
 	public void processLunchRR(MessageForm message)
 	{
+		((MyMessage)message).getLunchEmployee().eat();
+		message.setAddressee(myAgent().findAssistant(Id.lunchProcess));
+		startContinualAssistant(message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -43,6 +46,8 @@ public class LunchManager extends Manager
 	//meta! sender="LunchProcess", id="81", type="Finish"
 	public void processFinish(MessageForm message)
 	{
+		message.setCode(Mc.lunchRR);
+		response(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

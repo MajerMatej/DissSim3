@@ -26,7 +26,7 @@ public class VaccinationFillProcess extends Process
 	public void processStart(MessageForm message)
 	{
 		double timeToFill = 0.0;
-		for(int i = 0; i < 1; i++) {
+		for(int i = 0; i < 20; i++) {
 			timeToFill += m_gen.sample();
 		}
 		message.setCode(Mc.finish);

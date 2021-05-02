@@ -28,7 +28,6 @@ public class LunchTransitionAgent extends Agent
 		new LunchTransitionManager(Id.lunchTransitionManager, mySim(), this);
 		new LunchTransitionProcess(Id.lunchTransitionProcess, mySim(), this);
 		addOwnMessage(Mc.lunchRR);
-		addOwnMessage(Mc.requestResponse);
 	}
 	//meta! tag="end"
 }

@@ -25,6 +25,8 @@ public class LunchTransitionProcess extends Process
 	//meta! sender="LunchTransitionAgent", id="88", type="Start"
 	public void processStart(MessageForm message)
 	{
+		message.setCode(Mc.finish);
+		hold(m_gen.sample(),message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -32,6 +34,9 @@ public class LunchTransitionProcess extends Process
 	{
 		switch (message.code())
 		{
+			case Mc.finish:
+				assistantFinished(message);
+				break;
 		}
 	}
 

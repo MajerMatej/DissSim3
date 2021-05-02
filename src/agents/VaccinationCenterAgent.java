@@ -31,7 +31,6 @@ public class VaccinationCenterAgent extends Agent
 		addOwnMessage(Mc.lunchRR);
 		addOwnMessage(Mc.registrationRR);
 		addOwnMessage(Mc.startNotice);
-		addOwnMessage(Mc.requestResponse);
 		addOwnMessage(Mc.vaccinationRR);
 		addOwnMessage(Mc.customerArrivalNotice);
 	}

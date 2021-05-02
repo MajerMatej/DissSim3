@@ -9,7 +9,7 @@ import OSPABA.Process;
 //meta! id="80"
 public class LunchProcess extends Process
 {
-	private static TriangularRNG m_gen = new TriangularRNG(5.0,15.0,30.0);	public LunchProcess(int id, Simulation mySim, CommonAgent myAgent)
+	private static TriangularRNG m_gen = new TriangularRNG(5.0 * 60,15.0 * 60,30.0 * 60);	public LunchProcess(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
 	}
@@ -24,6 +24,8 @@ public class LunchProcess extends Process
 	//meta! sender="LunchAgent", id="81", type="Start"
 	public void processStart(MessageForm message)
 	{
+		message.setCode(Mc.finish);
+		hold(m_gen.sample(),message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -31,6 +33,9 @@ public class LunchProcess extends Process
 	{
 		switch (message.code())
 		{
+			case Mc.finish:
+				assistantFinished(message);
+				break;
 		}
 	}
 

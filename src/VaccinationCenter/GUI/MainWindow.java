@@ -632,11 +632,18 @@ public class MainWindow extends JFrame implements ISimDelegate {
                     case 6:
                         c.setBackground(Color.RED);
                         break;
-                    case 12:
+                    case 7:
+                    case 9:
+                        c.setBackground(Color.YELLOW);
+                        break;
+                    case 8:
                         c.setBackground(Color.ORANGE);
                         break;
+                    case 12:
+                        c.setBackground(Color.MAGENTA);
+                        break;
                     default:
-                        c.setBackground(Color.YELLOW);
+                        c.setBackground(Color.PINK);
                 }
 
             }
@@ -663,11 +670,11 @@ public class MainWindow extends JFrame implements ISimDelegate {
                     case 5:
                         c.setBackground(Color.RED);
                         break;
-//                    case 11:
-//                        c.setBackground(Color.ORANGE);
-//                        break;
-                    default:
+                    case 7:
                         c.setBackground(Color.ORANGE);
+                        break;
+                    default:
+                        c.setBackground(Color.YELLOW);
                 }
 
             }

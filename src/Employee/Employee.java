@@ -10,6 +10,7 @@ public abstract class Employee {
     private int m_id;
     private boolean m_hadLunchBreak = false;
 
+
     public Employee(int id) {
         m_availability = true;
         m_totalTimeOccupied = 0.0;
@@ -73,5 +74,11 @@ public abstract class Employee {
     {
         m_state = EmployeeState.GOING_BACK_FROM_LUNCH;
     }
+
+    public boolean hadLunchBreak()
+    {
+        return m_hadLunchBreak;
+    }
+
 
 }

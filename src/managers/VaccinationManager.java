@@ -39,12 +39,8 @@ public class VaccinationManager extends Manager
 	//meta! sender="VaccinationProcess", id="37", type="Finish"
 	public void processFinishVaccinationProcess(MessageForm message)
 	{
-		if(((MyMessage)message).getNurse() == null)
-		{
-			System.out.println("kokooot");
-		}
+
 		finishWork(((MyMessage)message).getNurse());
-//		((MyMessage)message).getNurse().setAvailable(mySim().currentTime());
 		myAgent().getWaitingTimeStat().addSample(((MyMessage)message).getTotalWaitingVacc());
 
 		Nurse nurse = getAvailableNurse();
@@ -90,6 +86,15 @@ public class VaccinationManager extends Manager
 	public void processRefillRR(MessageForm message)
 	{
 		((MyMessage)message).getRefillNurse().setAvailable(mySim().currentTime());
+		Nurse nurse = getAvailableNurse();
+		if(myAgent().getCustomersQueue().size() > 0 && nurse != null)
+		{
+			MyMessage nextMessage = (MyMessage)myAgent().getCustomersQueue().dequeue();
+			nextMessage.setTotalWaitingVacc(mySim().currentTime() - nextMessage.getStartWaitingVacc());
+
+			startWork(nextMessage, nurse);
+		}
+
 	}
 
 	//meta! sender="NurseLunchScheduler", id="116", type="Finish"
@@ -181,10 +186,6 @@ public class VaccinationManager extends Manager
 	}
 
 	private void finishWork(Nurse nurse) {
-		if(nurse == null)
-		{
-			System.out.println("pica");
-		}
 		if(nurse.getInjections() > 0)
 		{
 			nurse.setAvailable(mySim().currentTime());

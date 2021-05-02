@@ -22,6 +22,8 @@ public class NurseLunchScheduler extends Scheduler
 	//meta! sender="VaccinationAgent", id="116", type="Start"
 	public void processStart(MessageForm message)
 	{
+		message.setCode(Mc.finish);
+		hold(5 * 60 * 60.0 + 30 * 60, message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -29,6 +31,9 @@ public class NurseLunchScheduler extends Scheduler
 	{
 		switch (message.code())
 		{
+			case Mc.finish:
+				assistantFinished(message);
+				break;
 		}
 	}
 
