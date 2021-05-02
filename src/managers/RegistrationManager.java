@@ -90,12 +90,12 @@ public class RegistrationManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.finish:
-			processFinish(message);
-		break;
-
 		case Mc.lunchRR:
 			processLunchRR(message);
+		break;
+
+		case Mc.finish:
+			processFinish(message);
 		break;
 
 		case Mc.registrationRR:

@@ -36,7 +36,7 @@ public class VaccRefillTransitionManager extends Manager
 		startContinualAssistant(message);
 	}
 
-	//meta! sender="VaccinationAgent", id="95", type="Request"
+	//meta! sender="VaccinationAgent", id="107", type="Request"
 	public void processRefillRRVaccinationAgent(MessageForm message)
 	{
 		message.setAddressee(myAgent().findAssistant(Id.vaccRefillTransitionProcess));
@@ -52,7 +52,7 @@ public class VaccRefillTransitionManager extends Manager
 		}
 	}
 
-	//meta! sender="VaccRefillTransitionProcess", id="98", type="Finish"
+	//meta! sender="VaccRefillTransitionProcess", id="105", type="Finish"
 	public void processFinishVaccRefillTransitionProcess(MessageForm message)
 	{
 
@@ -62,7 +62,7 @@ public class VaccRefillTransitionManager extends Manager
 		request(message);
 	}
 
-	//meta! sender="RefillVaccTransitionProcess", id="100", type="Finish"
+	//meta! sender="RefillVaccTransitionProcess", id="109", type="Finish"
 	public void processFinishRefillVaccTransitionProcess(MessageForm message)
 	{
 		message.setCode(Mc.refillRR);
@@ -80,19 +80,6 @@ public class VaccRefillTransitionManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.finish:
-			switch (message.sender().id())
-			{
-			case Id.vaccRefillTransitionProcess:
-				processFinishVaccRefillTransitionProcess(message);
-			break;
-
-			case Id.refillVaccTransitionProcess:
-				processFinishRefillVaccTransitionProcess(message);
-			break;
-			}
-		break;
-
 		case Mc.refillRR:
 			switch (message.sender().id())
 			{
@@ -102,6 +89,19 @@ public class VaccRefillTransitionManager extends Manager
 
 			case Id.vaccinationAgent:
 				processRefillRRVaccinationAgent(message);
+			break;
+			}
+		break;
+
+		case Mc.finish:
+			switch (message.sender().id())
+			{
+			case Id.vaccRefillTransitionProcess:
+				processFinishVaccRefillTransitionProcess(message);
+			break;
+
+			case Id.refillVaccTransitionProcess:
+				processFinishRefillVaccTransitionProcess(message);
 			break;
 			}
 		break;

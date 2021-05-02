@@ -77,16 +77,16 @@ public class EnviroManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.customerLeftNotice:
-			processCustomerLeftNotice(message);
+		case Mc.finish:
+			processFinish(message);
 		break;
 
 		case Mc.startGeneratingNotice:
 			processStartGeneratingNotice(message);
 		break;
 
-		case Mc.finish:
-			processFinish(message);
+		case Mc.customerLeftNotice:
+			processCustomerLeftNotice(message);
 		break;
 
 		default:

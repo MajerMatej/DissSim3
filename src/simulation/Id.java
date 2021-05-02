@@ -13,7 +13,7 @@ public class Id extends IdList
 	public static final int vaccinationCenterAgent = 6;
 	public static final int waitingRoomAgent = 7;
 	public static final int lunchTransitionAgent = 17;
-	public static final int vaccRefillTransitionAgent = 20;
+	public static final int vaccRefillTransitionAgent = 30;
 	public static final int lunchAgent = 8;
 	public static final int exaTransitionAgent = 9;
 	public static final int waitTransitionAgent = 11;
@@ -26,7 +26,7 @@ public class Id extends IdList
 	public static final int vaccinationCenterManager = 106;
 	public static final int waitingRoomManager = 107;
 	public static final int lunchTransitionManager = 117;
-	public static final int vaccRefillTransitionManager = 120;
+	public static final int vaccRefillTransitionManager = 130;
 	public static final int lunchManager = 108;
 	public static final int exaTransitionManager = 109;
 	public static final int waitTransitionManager = 111;
@@ -40,9 +40,9 @@ public class Id extends IdList
 	public static final int customerArrivalScheduler = 1001;
 	public static final int registrationProcess = 1002;
 	public static final int examinationProces = 1003;
-	public static final int vaccRefillTransitionProcess = 1012;
-	public static final int refillVaccTransitionProcess = 1013;
 	public static final int vaccinationProcess = 1004;
 	public static final int waitingProcess = 1005;
+	public static final int vaccRefillTransitionProcess = 1012;
+	public static final int refillVaccTransitionProcess = 1013;
 	//meta! tag="end"
 }

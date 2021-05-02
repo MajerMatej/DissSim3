@@ -67,16 +67,16 @@ public class WaitingRoomManager extends Manager
 	{
 		switch (message.code())
 		{
+		case Mc.finish:
+			processFinish(message);
+		break;
+
 		case Mc.waitingRR:
 			processWaitingRR(message);
 		break;
 
 		case Mc.lunchRR:
 			processLunchRR(message);
-		break;
-
-		case Mc.finish:
-			processFinish(message);
 		break;
 
 		default:

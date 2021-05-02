@@ -116,49 +116,49 @@ public class VaccinationCenterManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.vaccinationRR:
-			processVaccinationRR(message);
-		break;
-
 		case Mc.lunchRR:
 			switch (message.sender().id())
 			{
-			case Id.registrationAgent:
-				processLunchRRRegistrationAgent(message);
+			case Id.vaccinationAgent:
+				processLunchRRVaccinationAgent(message);
 			break;
 
 			case Id.exaTransitionAgent:
 				processLunchRRExaTransitionAgent(message);
 			break;
 
-			case Id.vaccinationAgent:
-				processLunchRRVaccinationAgent(message);
-			break;
-
 			case Id.waitTransitionAgent:
 				processLunchRRWaitTransitionAgent(message);
 			break;
-			}
-		break;
 
-		case Mc.waitingRR:
-			processWaitingRR(message);
+			case Id.registrationAgent:
+				processLunchRRRegistrationAgent(message);
+			break;
+			}
 		break;
 
 		case Mc.requestResponse:
 			processRequestResponse(message);
 		break;
 
+		case Mc.waitingRR:
+			processWaitingRR(message);
+		break;
+
 		case Mc.registrationRR:
 			processRegistrationRR(message);
+		break;
+
+		case Mc.examinationRR:
+			processExaminationRR(message);
 		break;
 
 		case Mc.customerArrivalNotice:
 			processCustomerArrivalNotice(message);
 		break;
 
-		case Mc.examinationRR:
-			processExaminationRR(message);
+		case Mc.vaccinationRR:
+			processVaccinationRR(message);
 		break;
 
 		default:

@@ -26,8 +26,8 @@ public class ExaTransitionAgent extends Agent
 	private void init()
 	{
 		new ExaTransitionManager(Id.exaTransitionManager, mySim(), this);
-		new RegExaTransitionProcess(Id.regExaTransitionProcess, mySim(), this);
 		new ExaVaccTransitionProcess(Id.exaVaccTransitionProcess, mySim(), this);
+		new RegExaTransitionProcess(Id.regExaTransitionProcess, mySim(), this);
 		addOwnMessage(Mc.examinationRR);
 		addOwnMessage(Mc.lunchRR);
 	}

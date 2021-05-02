@@ -91,16 +91,16 @@ public class ExaminationManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.examinationRR:
-			processExaminationRR(message);
+		case Mc.lunchRR:
+			processLunchRR(message);
 		break;
 
 		case Mc.finish:
 			processFinish(message);
 		break;
 
-		case Mc.lunchRR:
-			processLunchRR(message);
+		case Mc.examinationRR:
+			processExaminationRR(message);
 		break;
 
 		default:

@@ -90,25 +90,12 @@ public class ExaTransitionManager extends Manager
 		case Mc.examinationRR:
 			switch (message.sender().id())
 			{
-			case Id.examinationAgent:
-				processExaminationRRExaminationAgent(message);
-			break;
-
 			case Id.vaccinationCenterAgent:
 				processExaminationRRVaccinationCenterAgent(message);
 			break;
-			}
-		break;
 
-		case Mc.finish:
-			switch (message.sender().id())
-			{
-			case Id.exaVaccTransitionProcess:
-				processFinishExaVaccTransitionProcess(message);
-			break;
-
-			case Id.regExaTransitionProcess:
-				processFinishRegExaTransitionProcess(message);
+			case Id.examinationAgent:
+				processExaminationRRExaminationAgent(message);
 			break;
 			}
 		break;
@@ -122,6 +109,19 @@ public class ExaTransitionManager extends Manager
 
 			case Id.examinationAgent:
 				processLunchRRExaminationAgent(message);
+			break;
+			}
+		break;
+
+		case Mc.finish:
+			switch (message.sender().id())
+			{
+			case Id.regExaTransitionProcess:
+				processFinishRegExaTransitionProcess(message);
+			break;
+
+			case Id.exaVaccTransitionProcess:
+				processFinishExaVaccTransitionProcess(message);
 			break;
 			}
 		break;

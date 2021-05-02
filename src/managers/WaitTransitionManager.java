@@ -83,12 +83,12 @@ public class WaitTransitionManager extends Manager
 		case Mc.waitingRR:
 			switch (message.sender().id())
 			{
-			case Id.waitingRoomAgent:
-				processWaitingRRWaitingRoomAgent(message);
-			break;
-
 			case Id.vaccinationCenterAgent:
 				processWaitingRRVaccinationCenterAgent(message);
+			break;
+
+			case Id.waitingRoomAgent:
+				processWaitingRRWaitingRoomAgent(message);
 			break;
 			}
 		break;

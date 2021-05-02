@@ -91,7 +91,7 @@ public class VaccinationManager extends Manager
 	{
 	}
 
-	//meta! sender="VaccRefillTransitionAgent", id="95", type="Response"
+	//meta! sender="VaccRefillTransitionAgent", id="107", type="Response"
 	public void processRefillRR(MessageForm message)
 	{
 		((MyMessage)message).getRefillNurse().setAvailable(mySim().currentTime());
@@ -107,10 +107,6 @@ public class VaccinationManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.vaccinationRR:
-			processVaccinationRR(message);
-		break;
-
 		case Mc.lunchRR:
 			processLunchRR(message);
 		break;
@@ -121,6 +117,10 @@ public class VaccinationManager extends Manager
 
 		case Mc.refillRR:
 			processRefillRR(message);
+		break;
+
+		case Mc.vaccinationRR:
+			processVaccinationRR(message);
 		break;
 
 		default:

@@ -81,12 +81,12 @@ public class VaccinationFillManager extends Manager
 	{
 		switch (message.code())
 		{
-		case Mc.finish:
-			processFinish(message);
-		break;
-
 		case Mc.refillRR:
 			processRefillRR(message);
+		break;
+
+		case Mc.finish:
+			processFinish(message);
 		break;
 
 		default:
