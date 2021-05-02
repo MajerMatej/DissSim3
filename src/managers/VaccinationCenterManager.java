@@ -84,6 +84,8 @@ public class VaccinationCenterManager extends Manager
 	//meta! sender="RegistrationAgent", id="61", type="Request"
 	public void processLunchRRRegistrationAgent(MessageForm message)
 	{
+		message.setAddressee(mySim().findAgent(Id.lunchTransitionAgent));
+		request(message);
 	}
 
 	//meta! sender="WaitTransitionAgent", id="69", type="Request"
@@ -104,6 +106,21 @@ public class VaccinationCenterManager extends Manager
 	//meta! sender="LunchTransitionAgent", id="84", type="Response"
 	public void processRequestResponse(MessageForm message)
 	{
+	}
+
+	//meta! sender="ModelAgent", id="119", type="Notice"
+	public void processStartNotice(MessageForm message)
+	{
+			MessageForm copyReg = message.createCopy();
+		copyReg.setAddressee(mySim().findAgent(Id.registrationAgent));
+		notice(copyReg);
+
+		MessageForm copyExa = message.createCopy();
+		copyExa.setAddressee(mySim().findAgent(Id.exaTransitionAgent));
+		notice(copyExa);
+
+		message.setAddressee(mySim().findAgent(Id.vaccinationAgent));
+		notice(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -155,6 +172,10 @@ public class VaccinationCenterManager extends Manager
 
 		case Mc.customerArrivalNotice:
 			processCustomerArrivalNotice(message);
+		break;
+
+		case Mc.startNotice:
+			processStartNotice(message);
 		break;
 
 		case Mc.vaccinationRR:

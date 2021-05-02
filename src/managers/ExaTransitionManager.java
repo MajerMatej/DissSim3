@@ -77,6 +77,11 @@ public class ExaTransitionManager extends Manager
 		response(message);
 	}
 
+	//meta! sender="VaccinationCenterAgent", id="121", type="Notice"
+	public void processStartNotice(MessageForm message)
+	{
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -124,6 +129,10 @@ public class ExaTransitionManager extends Manager
 				processFinishExaVaccTransitionProcess(message);
 			break;
 			}
+		break;
+
+		case Mc.startNotice:
+			processStartNotice(message);
 		break;
 
 		default:

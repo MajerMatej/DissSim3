@@ -49,7 +49,7 @@ public class ExaminationManager extends Manager
 	}
 
 	//meta! sender="ExaminationProces", id="34", type="Finish"
-	public void processFinish(MessageForm message)
+	public void processFinishExaminationProces(MessageForm message)
 	{
 		((MyMessage)message).getDoctor().setAvailable(mySim().currentTime());
 		myAgent().getWaitingTimeStat().addSample(((MyMessage)message).getTotalWaitingExa());
@@ -81,6 +81,16 @@ public class ExaminationManager extends Manager
 	{
 	}
 
+	//meta! sender="DoctorLunchScheduler", id="114", type="Finish"
+	public void processFinishDoctorLunchScheduler(MessageForm message)
+	{
+	}
+
+	//meta! sender="ExaTransitionAgent", id="122", type="Notice"
+	public void processStartNotice(MessageForm message)
+	{
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -91,12 +101,25 @@ public class ExaminationManager extends Manager
 	{
 		switch (message.code())
 		{
+		case Mc.finish:
+			switch (message.sender().id())
+			{
+			case Id.doctorLunchScheduler:
+				processFinishDoctorLunchScheduler(message);
+			break;
+
+			case Id.examinationProces:
+				processFinishExaminationProces(message);
+			break;
+			}
+		break;
+
 		case Mc.lunchRR:
 			processLunchRR(message);
 		break;
 
-		case Mc.finish:
-			processFinish(message);
+		case Mc.startNotice:
+			processStartNotice(message);
 		break;
 
 		case Mc.examinationRR:

@@ -44,5 +44,8 @@ public class Id extends IdList
 	public static final int waitingProcess = 1005;
 	public static final int vaccRefillTransitionProcess = 1012;
 	public static final int refillVaccTransitionProcess = 1013;
+	public static final int workerLunchScheduler = 1014;
+	public static final int doctorLunchScheduler = 1015;
+	public static final int nurseLunchScheduler = 1016;
 	//meta! tag="end"
 }

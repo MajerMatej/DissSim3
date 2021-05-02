@@ -30,6 +30,7 @@ public class ExaTransitionAgent extends Agent
 		new RegExaTransitionProcess(Id.regExaTransitionProcess, mySim(), this);
 		addOwnMessage(Mc.examinationRR);
 		addOwnMessage(Mc.lunchRR);
+		addOwnMessage(Mc.startNotice);
 	}
 	//meta! tag="end"
 }

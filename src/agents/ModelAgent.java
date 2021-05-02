@@ -34,5 +34,11 @@ public class ModelAgent extends Agent
 		message.setCode(Mc.startGeneratingNotice);
 		message.setAddressee(this);
 		manager().notice(message);
+
+		MyMessage newMessage = new MyMessage(mySim());
+		newMessage.setCode(Mc.startNotice);
+		newMessage.setAddressee(mySim().findAgent(Id.vaccinationCenterAgent));
+		manager().notice(newMessage);
+
 	}
 }

@@ -43,8 +43,10 @@ public class ExaminationAgent extends Agent
 	{
 		new ExaminationManager(Id.examinationManager, mySim(), this);
 		new ExaminationProces(Id.examinationProces, mySim(), this);
+		new DoctorLunchScheduler(Id.doctorLunchScheduler, mySim(), this);
 		addOwnMessage(Mc.examinationRR);
 		addOwnMessage(Mc.lunchRR);
+		addOwnMessage(Mc.startNotice);
 	}
 	//meta! tag="end"
 

@@ -37,13 +37,14 @@ public class ModelManager extends Manager
 	//meta! sender="EnviroAgent", id="17", type="Notice"
 	public void processCustomerArrivalNotice(MessageForm message)
 	{
-		message.createCopy();
 		message.setAddressee(mySim().findAgent(Id.vaccinationCenterAgent));
 
 		notice(message);
 	}
 
 	public void processStartGeneratingNotice(MessageForm message) {
+
+
 		message.setAddressee(mySim().findAgent(Id.enviroAgent));
 		notice(message);
 	}

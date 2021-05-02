@@ -582,6 +582,15 @@ public class MainWindow extends JFrame implements ISimDelegate {
                 case OCCUPIED:
                     stateIndex = 5;
                     break;
+                case GOING_TO_LUNCH:
+                    stateIndex = 6;
+                    break;
+                case EATING_LUNCH:
+                    stateIndex = 7;
+                    break;
+                case GOING_BACK_FROM_LUNCH:
+                    stateIndex = 8;
+                    break;
                 case GOING_TO_REFILL:
                     stateIndex = 9;
                     break;

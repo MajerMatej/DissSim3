@@ -37,7 +37,7 @@ public class VaccinationManager extends Manager
 	}
 
 	//meta! sender="VaccinationProcess", id="37", type="Finish"
-	public void processFinish(MessageForm message)
+	public void processFinishVaccinationProcess(MessageForm message)
 	{
 		if(((MyMessage)message).getNurse() == null)
 		{
@@ -97,6 +97,16 @@ public class VaccinationManager extends Manager
 		((MyMessage)message).getRefillNurse().setAvailable(mySim().currentTime());
 	}
 
+	//meta! sender="NurseLunchScheduler", id="116", type="Finish"
+	public void processFinishNurseLunchScheduler(MessageForm message)
+	{
+	}
+
+	//meta! sender="VaccinationCenterAgent", id="123", type="Notice"
+	public void processStartNotice(MessageForm message)
+	{
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -112,11 +122,24 @@ public class VaccinationManager extends Manager
 		break;
 
 		case Mc.finish:
-			processFinish(message);
+			switch (message.sender().id())
+			{
+			case Id.vaccinationProcess:
+				processFinishVaccinationProcess(message);
+			break;
+
+			case Id.nurseLunchScheduler:
+				processFinishNurseLunchScheduler(message);
+			break;
+			}
 		break;
 
 		case Mc.refillRR:
 			processRefillRR(message);
+		break;
+
+		case Mc.startNotice:
+			processStartNotice(message);
 		break;
 
 		case Mc.vaccinationRR:
