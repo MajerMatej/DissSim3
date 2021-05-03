@@ -44,11 +44,14 @@ public class ExaTransitionManager extends Manager
 	//meta! sender="ExaminationAgent", id="63", type="Request"
 	public void processLunchRRExaminationAgent(MessageForm message)
 	{
+		message.setAddressee(mySim().findAgent(Id.vaccinationCenterAgent));
+		request(message);
 	}
 
 	//meta! sender="VaccinationCenterAgent", id="64", type="Response"
 	public void processLunchRRVaccinationCenterAgent(MessageForm message)
 	{
+		response(message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -80,6 +83,8 @@ public class ExaTransitionManager extends Manager
 	//meta! sender="VaccinationCenterAgent", id="121", type="Notice"
 	public void processStartNotice(MessageForm message)
 	{
+		message.setAddressee(mySim().findAgent(Id.examinationAgent));
+		notice(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

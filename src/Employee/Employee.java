@@ -10,6 +10,9 @@ public abstract class Employee {
     private int m_id;
     private boolean m_hadLunchBreak = false;
 
+    private double m_startLunchBreakTime;
+    private double m_totalLunchBreakTime;
+
 
     public Employee(int id) {
         m_availability = true;
@@ -19,10 +22,12 @@ public abstract class Employee {
         m_state = EmployeeState.AVAILABLE;
         m_id = id;
         m_hadLunchBreak = false;
+        m_startLunchBreakTime = 0.0;
+        m_totalLunchBreakTime = 0.0;
     }
 
     public boolean isAvailable() {
-        return m_availability;
+        return (m_state == EmployeeState.AVAILABLE);
     }
 
     public void setOccupied(double actualTime) {
@@ -59,8 +64,9 @@ public abstract class Employee {
         return m_id;
     }
 
-    public void goToLunch()
+    public void goToLunch(double time)
     {
+        m_startLunchBreakTime = time;
         m_state = EmployeeState.GOING_TO_LUNCH;
     }
 
@@ -73,6 +79,12 @@ public abstract class Employee {
     public void goBackFromLunch()
     {
         m_state = EmployeeState.GOING_BACK_FROM_LUNCH;
+    }
+
+    public void backFromLunch(double time)
+    {
+        m_totalLunchBreakTime = time - m_startLunchBreakTime;
+        m_state = EmployeeState.AVAILABLE;
     }
 
     public boolean hadLunchBreak()

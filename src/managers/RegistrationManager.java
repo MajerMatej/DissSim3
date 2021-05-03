@@ -1,6 +1,7 @@
 package managers;
 
 import Employee.AdminWorker;
+import Employee.Employee;
 import OSPABA.*;
 import OSPRNG.UniformContinuousRNG;
 import simulation.*;
@@ -11,8 +12,10 @@ import java.util.LinkedList;
 //meta! id="3"
 public class RegistrationManager extends Manager
 {
-	private boolean m_lunchTime;
 	private LinkedList<UniformContinuousRNG> m_adminWorkersGen;
+	private boolean m_lunchTime;
+	private int m_maxLunchingEmp;
+	private int m_currentLunchingEmp;
 
 	public RegistrationManager(int id, Simulation mySim, Agent myAgent)
 	{
@@ -35,6 +38,9 @@ public class RegistrationManager extends Manager
 			m_adminWorkersGen.add(new UniformContinuousRNG(0.0, 1.0));
 		}
 		m_lunchTime = false;
+		m_maxLunchingEmp = ((MySimulation)mySim()).getNumOfAdminWorkers() / 2;
+		if(m_maxLunchingEmp == 0) m_maxLunchingEmp++;
+		m_currentLunchingEmp = 0;
 	}
 
 	//meta! sender="VaccinationCenterAgent", id="19", type="Request"
@@ -54,7 +60,13 @@ public class RegistrationManager extends Manager
 	{
 		((MyMessage)message).getWorker().setAvailable(mySim().currentTime());
 		myAgent().getWaitingTimeStat().addSample(((MyMessage)message).getTotalWaitingReg());
+		if(m_currentLunchingEmp + 1 <= m_maxLunchingEmp && m_lunchTime
+			&& !((MyMessage)message).getWorker().hadLunchBreak())
+		{
+			MessageForm copy = message.createCopy();
 
+			sendWorkerToLunch((MyMessage)copy, ((MyMessage) message).getWorker());
+		}
 		AdminWorker worker = getAvailableWorker();
 		if(myAgent().getCustomersQueue().size() > 0 && worker != null)
 		{
@@ -80,7 +92,24 @@ public class RegistrationManager extends Manager
 	//meta! sender="VaccinationCenterAgent", id="61", type="Response"
 	public void processLunchRR(MessageForm message)
 	{
-		((MyMessage)message).getLunchEmployee().setAvailable(mySim().currentTime());
+		((MyMessage)message).getLunchEmployee().backFromLunch(mySim().currentTime());
+		m_currentLunchingEmp--;
+
+		for (AdminWorker emp : myAgent().getAvailableAdminWorkers()) {
+			if (!emp.hadLunchBreak())
+			{
+				sendWorkerToLunch((MyMessage) message, emp);
+				return;
+			}
+		}
+		AdminWorker worker = getAvailableWorker();
+		if(myAgent().getCustomersQueue().size() > 0 && worker != null)
+		{
+			MyMessage nextMessage = (MyMessage)myAgent().getCustomersQueue().dequeue();
+			nextMessage.setTotalWaitingReg(mySim().currentTime() - nextMessage.getStartWaitingReg());
+
+			startWork(nextMessage, worker);
+		}
 	}
 
 	//meta! sender="WorkerLunchScheduler", id="112", type="Finish"
@@ -93,10 +122,7 @@ public class RegistrationManager extends Manager
 			if(i < ((myAgent().getAvailableAdminWorkers().size()) / 2.0))
 			{
 				MyMessage newMessage = new MyMessage(mySim());
-				newMessage.setLunchEmployee(worker);
-				newMessage.setCode(Mc.lunchRR);
-				newMessage.setAddressee(mySim().findAgent(Id.vaccinationCenterAgent));
-				request(newMessage);
+				sendWorkerToLunch(newMessage, worker);
 			}
 			i++;
 		}
@@ -181,6 +207,16 @@ public class RegistrationManager extends Manager
 			}
 		}
 		return null;
+	}
+
+	private void sendWorkerToLunch(MyMessage message, AdminWorker worker)
+	{
+		message.setLunchEmployee(worker);
+		message.getLunchEmployee().goToLunch(mySim().currentTime());
+		message.setCode(Mc.lunchRR);
+		message.setAddressee(mySim().findAgent(Id.vaccinationCenterAgent));
+		m_currentLunchingEmp++;
+		request(message);
 	}
 
 }

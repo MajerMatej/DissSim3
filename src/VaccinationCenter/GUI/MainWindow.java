@@ -405,7 +405,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
     {
         MySimulation sim = ((MySimulation)simulation);
 
-        try {
+//        try {
             double tmpTime = systemTime + sim.currentTime();
 
             int seconds = (int)(tmpTime % 60);
@@ -472,9 +472,9 @@ public class MainWindow extends JFrame implements ISimDelegate {
             refreshEmployees(nurses, nursTableModel, true);
             nurseTable.setModel(nursTableModel);
 
-        }catch (Exception e) {
-            System.out.println("PEnis" + e.toString());
-        }
+//        }catch (Exception e) {
+//            System.out.println("PEnis" + e.toString());
+//        }
     }
 
     private void updateGUISimFinished(Simulation simulation){
@@ -570,7 +570,16 @@ public class MainWindow extends JFrame implements ISimDelegate {
             return;
         }
         for(int i = (tableModel == nursTableModel)? 5 : 4; i < tableModel.getColumnCount(); i++) {
-            tableModel.setValueAt(" ", row, i);
+            if(i == ((tableModel == nursTableModel) ? 8 : 7))
+            {
+                if( tableModel.getValueAt(row, i) == "☺")
+                {
+                    tableModel.setValueAt("*", row, i);
+                }
+            } else
+            {
+                tableModel.setValueAt(" ", row, i);
+            }
         }
         int stateIndex = -1;
 
@@ -681,6 +690,5 @@ public class MainWindow extends JFrame implements ISimDelegate {
             super.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
             return c;
         }
-
     }
 }

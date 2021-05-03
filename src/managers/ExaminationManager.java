@@ -1,5 +1,6 @@
 package managers;
 
+import Employee.AdminWorker;
 import Employee.Doctor;
 import OSPABA.*;
 import OSPRNG.UniformContinuousRNG;
@@ -12,6 +13,9 @@ import java.util.LinkedList;
 public class ExaminationManager extends Manager
 {
 	private LinkedList<UniformContinuousRNG> m_doctorsGens;
+	private boolean m_lunchTime;
+	private int m_maxLunchingEmp;
+	private int m_currentLunchingEmp;
 
 	public ExaminationManager(int id, Simulation mySim, Agent myAgent)
 	{
@@ -34,6 +38,10 @@ public class ExaminationManager extends Manager
 		for(int i = 0; i < ((MySimulation)mySim()).getNumOfDoctors() - 1; i++) {
 			m_doctorsGens.add(new UniformContinuousRNG(0.0, 1.0));
 		}
+		m_lunchTime = false;
+		m_maxLunchingEmp = ((MySimulation)mySim()).getNumOfDoctors() / 2;
+		if(m_maxLunchingEmp == 0) m_maxLunchingEmp++;
+		m_currentLunchingEmp = 0;
 	}
 
 	//meta! sender="ExaTransitionAgent", id="20", type="Request"
@@ -53,6 +61,14 @@ public class ExaminationManager extends Manager
 	{
 		((MyMessage)message).getDoctor().setAvailable(mySim().currentTime());
 		myAgent().getWaitingTimeStat().addSample(((MyMessage)message).getTotalWaitingExa());
+
+		if(m_currentLunchingEmp + 1 <= m_maxLunchingEmp && m_lunchTime
+				&& !((MyMessage)message).getDoctor().hadLunchBreak())
+		{
+			MessageForm copy = message.createCopy();
+
+			sendDoctorToLunch((MyMessage)copy, ((MyMessage) message).getDoctor());
+		}
 
 		Doctor doctor = getAvailableDoctor();
 		if(myAgent().getCustomersQueue().size() > 0 && doctor != null)
@@ -79,16 +95,47 @@ public class ExaminationManager extends Manager
 	//meta! sender="ExaTransitionAgent", id="63", type="Response"
 	public void processLunchRR(MessageForm message)
 	{
+		((MyMessage)message).getLunchEmployee().backFromLunch(mySim().currentTime());
+		m_currentLunchingEmp--;
+
+		for (Doctor emp : myAgent().getAvailableDoctors()) {
+			if (!emp.hadLunchBreak())
+			{
+				sendDoctorToLunch((MyMessage) message, emp);
+				return;
+			}
+		}
+		Doctor doctor = getAvailableDoctor();
+		if(myAgent().getCustomersQueue().size() > 0 && doctor != null)
+		{
+			MyMessage nextMessage = (MyMessage)myAgent().getCustomersQueue().dequeue();
+			nextMessage.setTotalWaitingReg(mySim().currentTime() - nextMessage.getStartWaitingReg());
+
+			startWork(nextMessage, doctor);
+		}
 	}
 
 	//meta! sender="DoctorLunchScheduler", id="114", type="Finish"
 	public void processFinishDoctorLunchScheduler(MessageForm message)
 	{
+		m_lunchTime = true;
+		int i = 0;
+		LinkedList<Doctor> availableDoctors = myAgent().getAvailableDoctors();
+		for (Doctor doctor: availableDoctors) {
+			if(i < ((myAgent().getAvailableDoctors().size()) / 2.0))
+			{
+				MyMessage newMessage = new MyMessage(mySim());
+				sendDoctorToLunch(newMessage, doctor);
+			}
+			i++;
+		}
 	}
 
 	//meta! sender="ExaTransitionAgent", id="122", type="Notice"
 	public void processStartNotice(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.doctorLunchScheduler));
+		startContinualAssistant(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -163,6 +210,16 @@ public class ExaminationManager extends Manager
 			}
 		}
 		return null;
+	}
+
+	private void sendDoctorToLunch(MyMessage message, Doctor doctor)
+	{
+		message.setLunchEmployee(doctor);
+		message.getLunchEmployee().goToLunch(mySim().currentTime());
+		message.setCode(Mc.lunchRR);
+		message.setAddressee(mySim().findAgent(Id.exaTransitionAgent));
+		m_currentLunchingEmp++;
+		request(message);
 	}
 
 }

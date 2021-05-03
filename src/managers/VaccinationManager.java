@@ -1,5 +1,6 @@
 package managers;
 
+import Employee.Doctor;
 import Employee.Nurse;
 import OSPABA.*;
 import OSPRNG.UniformContinuousRNG;
@@ -12,6 +13,9 @@ import java.util.LinkedList;
 public class VaccinationManager extends Manager
 {
 	private LinkedList<UniformContinuousRNG> m_nursesGens;
+	private boolean m_lunchTime;
+	private int m_maxLunchingEmp;
+	private int m_currentLunchingEmp;
 
 	public VaccinationManager(int id, Simulation mySim, Agent myAgent)
 	{
@@ -34,6 +38,10 @@ public class VaccinationManager extends Manager
 		for(int i = 0; i < ((MySimulation)mySim()).getNumOfNurses() - 1; i++) {
 			m_nursesGens.add(new UniformContinuousRNG(0.0, 1.0));
 		}
+		m_lunchTime = false;
+		m_maxLunchingEmp = ((MySimulation)mySim()).getNumOfNurses() / 2;
+		if(m_maxLunchingEmp == 0) m_maxLunchingEmp++;
+		m_currentLunchingEmp = 0;
 	}
 
 	//meta! sender="VaccinationProcess", id="37", type="Finish"
@@ -42,6 +50,14 @@ public class VaccinationManager extends Manager
 
 		finishWork(((MyMessage)message).getNurse());
 		myAgent().getWaitingTimeStat().addSample(((MyMessage)message).getTotalWaitingVacc());
+
+		if(m_currentLunchingEmp + 1 <= m_maxLunchingEmp && m_lunchTime
+				&& !((MyMessage)message).getNurse().hadLunchBreak())
+		{
+			MessageForm copy = message.createCopy();
+
+			sendNurseToLunch((MyMessage)copy, ((MyMessage) message).getNurse());
+		}
 
 		Nurse nurse = getAvailableNurse();
 		if(myAgent().getCustomersQueue().size() > 0 && nurse != null)
@@ -80,6 +96,24 @@ public class VaccinationManager extends Manager
 	//meta! sender="VaccinationCenterAgent", id="65", type="Response"
 	public void processLunchRR(MessageForm message)
 	{
+		((MyMessage)message).getLunchEmployee().backFromLunch(mySim().currentTime());
+		m_currentLunchingEmp--;
+
+		for (Nurse emp : myAgent().getAvailableNurses()) {
+			if (!emp.hadLunchBreak())
+			{
+				sendNurseToLunch((MyMessage) message, emp);
+				return;
+			}
+		}
+		Nurse nurse = getAvailableNurse();
+		if(myAgent().getCustomersQueue().size() > 0 && nurse != null)
+		{
+			MyMessage nextMessage = (MyMessage)myAgent().getCustomersQueue().dequeue();
+			nextMessage.setTotalWaitingReg(mySim().currentTime() - nextMessage.getStartWaitingReg());
+
+			startWork(nextMessage, nurse);
+		}
 	}
 
 	//meta! sender="VaccRefillTransitionAgent", id="107", type="Response"
@@ -100,11 +134,24 @@ public class VaccinationManager extends Manager
 	//meta! sender="NurseLunchScheduler", id="116", type="Finish"
 	public void processFinishNurseLunchScheduler(MessageForm message)
 	{
+		m_lunchTime = true;
+		int i = 0;
+		LinkedList<Nurse> availableNurses = myAgent().getAvailableNurses();
+		for (Nurse nurse: availableNurses) {
+			if(i < ((myAgent().getAvailableNurses().size()) / 2.0))
+			{
+				MyMessage newMessage = new MyMessage(mySim());
+				sendNurseToLunch(newMessage, nurse);
+			}
+			i++;
+		}
 	}
 
 	//meta! sender="VaccinationCenterAgent", id="123", type="Notice"
 	public void processStartNotice(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.nurseLunchScheduler));
+		startContinualAssistant(message);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -196,6 +243,16 @@ public class VaccinationManager extends Manager
 		message.setCode(Mc.refillRR);
 		message.setAddressee(mySim().findAgent(Id.vaccRefillTransitionAgent));
 
+		request(message);
+	}
+
+	private void sendNurseToLunch(MyMessage message, Nurse nurse)
+	{
+		message.setLunchEmployee(nurse);
+		message.getLunchEmployee().goToLunch(mySim().currentTime());
+		message.setCode(Mc.lunchRR);
+		message.setAddressee(mySim().findAgent(Id.vaccinationCenterAgent));
+		m_currentLunchingEmp++;
 		request(message);
 	}
 }

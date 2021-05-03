@@ -39,7 +39,7 @@ public class LunchTransitionManager extends Manager
 	public void processLunchRRVaccinationCenterAgent(MessageForm message)
 	{
 		message.setAddressee(myAgent().findAssistant(Id.lunchTransitionProcess));
-		((MyMessage)message).getLunchEmployee().goToLunch();
+		//((MyMessage)message).getLunchEmployee().goToLunch(mySim().currentTime());
 		startContinualAssistant(message);
 	}
 
