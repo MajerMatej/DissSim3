@@ -31,6 +31,7 @@ public class ModelAgent extends Agent
 	public void runSim()
 	{
 		MyMessage message = new MyMessage(mySim());
+		message.setExperiment3(((MySimulation)mySim()).isExperiment3());
 		message.setCode(Mc.startGeneratingNotice);
 		message.setAddressee(this);
 		manager().notice(message);

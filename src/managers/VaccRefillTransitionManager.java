@@ -26,6 +26,7 @@ public class VaccRefillTransitionManager extends Manager
 		{
 			petriNet().clear();
 		}
+
 	}
 
 	//meta! sender="VaccinationFillAgent", id="55", type="Response"
@@ -41,6 +42,7 @@ public class VaccRefillTransitionManager extends Manager
 	{
 		message.setAddressee(myAgent().findAssistant(Id.vaccRefillTransitionProcess));
 		((MyMessage)message).getRefillNurse().goRefillInjections();
+
 		startContinualAssistant(message);
 	}
 
@@ -55,7 +57,6 @@ public class VaccRefillTransitionManager extends Manager
 	//meta! sender="VaccRefillTransitionProcess", id="105", type="Finish"
 	public void processFinishVaccRefillTransitionProcess(MessageForm message)
 	{
-
 		message.setAddressee(mySim().findAgent(Id.vaccinationFillAgent));
 		message.setCode(Mc.refillRR);
 

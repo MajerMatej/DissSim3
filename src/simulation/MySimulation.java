@@ -4,6 +4,7 @@ import Employee.AdminWorker;
 import OSPABA.*;
 import OSPStat.Stat;
 import agents.*;
+import managers.VaccRefillTransitionManager;
 
 public class MySimulation extends Simulation
 {
@@ -36,14 +37,19 @@ public class MySimulation extends Simulation
 	private Stat m_doctorUtil;
 	private Stat m_nurseUtil;
 
+	private Stat m_waitingTimeRefill;
+
 	private boolean m_turbo = false;
 	private double m_speedInterval;
 	private double m_speedDuration;
 
 	private double m_finishTime;
 
+	private boolean m_experiment3;
 
-	public MySimulation(int numOfAdminWorkers, int numOfDoctors, int numOfNurses, double endSimTime, int numOfCustomers)
+
+	public MySimulation(int numOfAdminWorkers, int numOfDoctors, int numOfNurses, double endSimTime,
+						int numOfCustomers, boolean experiment3)
 	{
 		init();
 		m_numOfAdminWorkers = numOfAdminWorkers;
@@ -51,6 +57,7 @@ public class MySimulation extends Simulation
 		m_numOfNurses = numOfNurses;
 		m_endSimTime = endSimTime;
 		m_numOfCustomers = numOfCustomers;
+		m_experiment3 = experiment3;
 	}
 
 	@Override
@@ -73,6 +80,8 @@ public class MySimulation extends Simulation
 		m_workerUtil = new Stat();
 		m_doctorUtil = new Stat();
 		m_nurseUtil = new Stat();
+
+		m_waitingTimeRefill = new Stat();
 	}
 
 	@Override
@@ -124,6 +133,9 @@ public class MySimulation extends Simulation
 		m_workerUtil.addSample(registrationAgent().getAdminWorkersUtilization());
 		m_doctorUtil.addSample(examinationAgent().getDoctorsUtilization());
 		m_nurseUtil.addSample(vaccinationAgent().getNursesUtilization());
+
+		m_waitingTimeRefill.addSample(vaccinationFillAgent().getWaitingTimeStat().mean()
+				* vaccinationFillAgent().getWaitingTimeStat().sampleSize() / currentTime());
 
 	}
 
@@ -368,5 +380,13 @@ public VaccinationFillAgent vaccinationFillAgent()
 	public void setFinishTime(double finishTime)
 	{
 		m_finishTime = finishTime;
+	}
+
+	public Stat getWaitingTimeRefill() {
+		return m_waitingTimeRefill;
+	}
+
+	public boolean isExperiment3() {
+		return m_experiment3;
 	}
 }

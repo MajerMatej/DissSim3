@@ -74,9 +74,6 @@ public class MainWindow extends JFrame implements ISimDelegate {
     private JTable workTable;
     private JLabel customersLabel;
     private JTextField customersTF;
-    private JTextField exp2CustTF;
-    private JTextField exp2RepTF;
-    private JTable exp2Table;
     private JButton exp2BTN;
     private JPanel employeeTab;
     private JPanel chartPane;
@@ -102,6 +99,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
     private JLabel vaccRefillCI;
     private JTable doctorTable;
     private JTable nurseTable;
+    private JCheckBox exp3CB;
     private JPanel chartTab;
 
     private int m_workers;
@@ -115,6 +113,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
     JFreeChart chart;
     DefaultTableModel tableModelEXP3;
     DefaultTableModel tableModelEXP2;
+    private boolean exp2;
 
 
     public MainWindow(Controller app) {
@@ -226,7 +225,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
         exp3BTN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                runExperiment3();
+                runexperiment2();
             }
         });
         refreshButton.addActionListener(new ActionListener() {
@@ -237,12 +236,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
                 }
 
             }
-        });
-        exp2BTN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                runExperiment2();
-            }
+
         });
         slider1.addComponentListener(new ComponentAdapter() {
         });
@@ -266,12 +260,13 @@ public class MainWindow extends JFrame implements ISimDelegate {
         });
     }
 
-    private void runExperiment3() {
-//        app.subscribeToSimCore(this);
-//        app.experiment3(Integer.parseInt(minDocTF.getText()), Integer.parseInt(maxDocTF.getText()),
-//                Integer.parseInt(repExp3TF.getText()), Integer.parseInt(customersTF.getText()),
-//                Integer.parseInt(adminWorkTF.getText()), Integer.parseInt(nursesTF.getText()),
-//                Integer.parseInt(repTimeTB.getText()));
+    private void runexperiment2() {
+        app.subscribeToSimCore(this);
+        app.experiment2(Integer.parseInt(minDocTF.getText()), Integer.parseInt(maxDocTF.getText()),
+                Integer.parseInt(repExp3TF.getText()), Integer.parseInt(customersTF.getText()),
+                Integer.parseInt(adminWorkTF.getText()), Integer.parseInt(nursesTF.getText()),
+                Integer.parseInt(repTimeTB.getText()));
+        exp2 = true;
     }
     private void runExperiment2() {
 //        LinkedList<String> list = app.experiment2(Integer.parseInt(doctorsTF.getText()),
@@ -303,7 +298,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
         empMedL.setText("Doctors: " + numOfDoctors);
         empVaccL.setText("Nursers: " + numOfNurses);
 
-        app.init(numberOfReplications, seed, numOfAdminWorkers, numOfDoctors, numOfNurses, repTime, speed, maxCustomers);
+        app.init(numberOfReplications, seed, numOfAdminWorkers, numOfDoctors, numOfNurses, repTime, speed, maxCustomers, exp3CB.isSelected());
         app.setTurbo(turboCB.isSelected());
         changeSimSpeed();
         app.subscribeToSimCore(this);
@@ -334,7 +329,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
                 i++;
             }
         } catch (Exception e) {
-            System.out.println("Hallo" + e.toString());
+            //System.out.println("Hallo" + e.toString());
         }
         //vaccTable.setModel(tableModel);
 
@@ -361,12 +356,10 @@ public class MainWindow extends JFrame implements ISimDelegate {
         return new Object[]{tokens[0], tokens[1], tokens[2]};
     }
 
-    private void refreshEXP3(HashMap<String, Double> stats) {
-        double replications = stats.get("CompleteReplications");
-        double pplInQ = stats.get("ExaminedCustomersGlobal") / replications;
-        int docs = (int)(double)stats.get("Doctors");
-        //avgPplInMedQL.setText(String.format("Average ppl in Queue: %.4f", stats.get("ExaminedCustomersGlobal") / replications));
-        System.out.println("" + docs + ", " + pplInQ);
+    private void refreshEXP3(MySimulation simulation) {
+        double replications = simulation.currentReplication();
+        double pplInQ = simulation.getAvgCustomersExa().mean();
+        int docs = simulation.getNumOfDoctors();
         xyseries.add(docs, pplInQ);
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
@@ -387,6 +380,11 @@ public class MainWindow extends JFrame implements ISimDelegate {
     @Override
     public void simStateChanged(Simulation simulation, SimState simState) {
         if(simState == SimState.stopped) {
+            if(exp2)
+            {
+                refreshEXP3((MySimulation) simulation);
+                return;
+            }
             if (turboCB.isSelected()) {
 
                 updateGUISimFinished(simulation);
@@ -398,7 +396,7 @@ public class MainWindow extends JFrame implements ISimDelegate {
 
     @Override
     public void refresh(Simulation simulation) {
-        updateGUIinRep(simulation);
+        if(!exp2) updateGUIinRep(simulation);
     }
 
     private void updateGUIinRep(Simulation simulation)
@@ -440,6 +438,9 @@ public class MainWindow extends JFrame implements ISimDelegate {
             utilNurL.setText(String.format("%.4f ", sim.vaccinationAgent().getNursesUtilization() * 100) + "%");
             availNurL.setText("Available: " + sim.vaccinationAgent().getAvailableNurses().size());
             pplInVaccQL.setText("Queue length: " + sim.vaccinationAgent().getCustomersQueue().size());
+
+            vaccAvgRefillWT.setText(String.format("%.4f",sim.vaccinationFillAgent().getWaitingTimeStat().mean()
+                    * sim.vaccinationFillAgent().getWaitingTimeStat().sampleSize() / sim.currentTime()));
 
             pplInWRL.setText("Ppl in waiting room: " + sim.waitingRoomAgent().getCustomersWaiting());
 
@@ -493,6 +494,8 @@ public class MainWindow extends JFrame implements ISimDelegate {
             avgTimeInVaccQL.setText(String.format("%.4f", sim.getWaitingTimeVacc().mean()));
             avgPplInVaccQL.setText(String.format("%.4f ", sim.getAvgCustomersVacc().mean()));
             utilNurL.setText(String.format("%.4f ", sim.getNurseUtil().mean() * 100) + "%");
+
+            vaccAvgRefillWT.setText(String.format("%.4f", sim.getWaitingTimeRefill().mean()));
 
             avgPplInWRL.setText(String.format("%.4f ", sim.getAvgCustomersWR().mean()));
             updateConfidenceIntervals(simulation);
@@ -558,6 +561,9 @@ public class MainWindow extends JFrame implements ISimDelegate {
             vaccUtilCI.setText(String.format(" <%.4f , %.4f>",
                     sim.getNurseUtil().confidenceInterval_95()[0],
                     sim.getNurseUtil().confidenceInterval_95()[1]));
+            vaccRefillCI.setText(String.format(" <%.4f , %.4f>",
+                    sim.getWaitingTimeRefill().confidenceInterval_95()[0],
+                    sim.getWaitingTimeRefill().confidenceInterval_95()[1]));
         }
     }
 

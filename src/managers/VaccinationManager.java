@@ -119,7 +119,16 @@ public class VaccinationManager extends Manager
 	//meta! sender="VaccRefillTransitionAgent", id="107", type="Response"
 	public void processRefillRR(MessageForm message)
 	{
-		((MyMessage)message).getRefillNurse().setAvailable(mySim().currentTime());
+		((MyMessage)message).getRefillNurse().backFromRefill(mySim().currentTime());
+
+		if(m_currentLunchingEmp + 1 <= m_maxLunchingEmp && m_lunchTime
+				&& !((MyMessage)message).getRefillNurse().hadLunchBreak())
+		{
+			MessageForm copy = message.createCopy();
+			sendNurseToLunch((MyMessage)copy, ((MyMessage) message).getRefillNurse());
+		}
+
+
 		Nurse nurse = getAvailableNurse();
 		if(myAgent().getCustomersQueue().size() > 0 && nurse != null)
 		{

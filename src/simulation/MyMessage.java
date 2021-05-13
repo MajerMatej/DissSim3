@@ -30,6 +30,8 @@ public class MyMessage extends MessageForm
 
 	private Employee m_lunchEmployee;
 
+	private boolean m_experiment3;
+
 	public MyMessage(Simulation sim)
 	{
 		super(sim);
@@ -52,6 +54,8 @@ public class MyMessage extends MessageForm
 
 		m_worker = ((MyMessage)original).m_worker;
 		m_doctor = ((MyMessage)original).m_doctor;
+
+		m_experiment3 = ((MyMessage)original).m_experiment3;
 	}
 
 	@Override
@@ -74,6 +78,7 @@ public class MyMessage extends MessageForm
 
 		m_worker = ((MyMessage)original).m_worker;
 		m_doctor = ((MyMessage)original).m_doctor;
+		m_experiment3 = ((MyMessage)original).m_experiment3;
 		// Copy attributes
 	}
 
@@ -195,5 +200,13 @@ public class MyMessage extends MessageForm
 
 	public void setLunchEmployee(Employee lunchEmployee) {
 		this.m_lunchEmployee = lunchEmployee;
+	}
+
+	public boolean getExperiment3() {
+		return m_experiment3;
+	}
+
+	public void setExperiment3(boolean experiment3) {
+		this.m_experiment3 = experiment3;
 	}
 }

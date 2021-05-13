@@ -71,7 +71,6 @@ public class RegistrationAgent extends Agent
 		return result;
 	}
 
-	//todo remove
 	public LinkedList<AdminWorker> getAdminWorkers() {
 		return m_adminWorkers;
 	}

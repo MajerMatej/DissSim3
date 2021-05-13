@@ -82,4 +82,15 @@ public class VaccinationAgent extends Agent
 
 		return sum / m_nurses.size();
 	}
+
+	public double getAverageFillWaitingTime()
+	{
+		double result = 0.0;
+		for(Nurse nurse : m_nurses)
+		{
+			result += nurse.getFillWaitingTimeTotal();
+		}
+		return  result / m_nurses.size();
+	}
+
 }

@@ -27,6 +27,7 @@ public class VaccinationFillManager extends Manager
 		{
 			petriNet().clear();
 		}
+		m_nursesFilling = 0;
 	}
 
 	//meta! sender="VaccRefillTransitionAgent", id="55", type="Request"
@@ -58,15 +59,18 @@ public class VaccinationFillManager extends Manager
 	public void processFinish(MessageForm message)
 	{
 		m_nursesFilling--;
+		//myAgent().getWaitingTimeStat().addSample(((MyMessage)message).getTotalWaitingRefill());
 		if (myAgent().getNursesQueue().size() > 0)
 		{
 			m_nursesFilling++;
 			MyMessage nextMessage = (MyMessage)myAgent().getNursesQueue().dequeue();
-			((MyMessage)nextMessage).getRefillNurse().refillInjections();
+			nextMessage.getRefillNurse().refillInjections();
+			nextMessage.setTotalWaitingRefill(mySim().currentTime() - (nextMessage).getStartWaitingRefill());
+			myAgent().getWaitingTimeStat().addSample(((MyMessage)nextMessage).getTotalWaitingRefill());
 			nextMessage.setAddressee(myAgent().findAssistant(Id.vaccinationFillProcess));
 			startContinualAssistant(nextMessage);
 		}
-		((MyMessage)message).setTotalWaitingRefill(mySim().currentTime() - ((MyMessage) message).getStartWaitingRefill());
+
 		message.setCode(Mc.refillRR);
 		response(message);
 	}

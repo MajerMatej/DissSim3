@@ -22,10 +22,11 @@ public class Controller implements ISimDelegate {
     }
 
     public void init(int numberOfReplications, int seed,
-                     int numOfAdminWorkers, int numOfDoctors, int numOfNurses, double repTime, int speed, int maxCustomers) {
+                     int numOfAdminWorkers, int numOfDoctors, int numOfNurses, double repTime, int speed,
+                     int maxCustomers, boolean experiment3) {
         m_replications = numberOfReplications;
         m_repTime = repTime;
-        m_simCore =new MySimulation(numOfAdminWorkers,numOfDoctors,numOfNurses, repTime, maxCustomers);
+        m_simCore =new MySimulation(numOfAdminWorkers,numOfDoctors,numOfNurses, repTime, maxCustomers, experiment3);
         m_simCore.registerDelegate(this);
     }
 
@@ -84,5 +85,24 @@ public class Controller implements ISimDelegate {
         {
             m_simCore.setSpeed(interval, duration);
         }
+    }
+
+    public void experiment2(int minDoc, int maxDoc, int reps, int customers, int workers, int nurses, int repTime) {
+        exp3Running = true;
+        new Thread(() -> {
+            MySimulation simCore;
+            //simCore = new MySimulation(workers,minDoc,nurses,repTime, customers);
+
+            for(int docs = minDoc; docs <= maxDoc; docs++) {
+                simCore = new MySimulation(workers,docs,nurses,repTime, customers, false);
+                simCore.registerDelegate(this);
+                simCore.setTurbo(true);
+                if(m_observer != null) {
+                    simCore.registerDelegate(m_observer);
+                }
+                simCore.simulate(reps, 9000000d);
+            }
+            exp3Running = false;
+        }).start();
     }
 }

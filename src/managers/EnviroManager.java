@@ -33,9 +33,9 @@ public class EnviroManager extends Manager
 	//meta! sender="ModelAgent", id="16", type="Notice"
 	public void processStartGeneratingNotice(MessageForm message)
 	{
-		MyMessage m = new MyMessage(mySim());
-		m.setAddressee(myAgent().findAssistant(Id.customerArrivalScheduler));
-		startContinualAssistant(m);
+//		MyMessage m = new MyMessage(mySim());
+		message.setAddressee(myAgent().findAssistant(Id.customerArrivalScheduler));
+		startContinualAssistant(message);
 	}
 
 	//meta! sender="ModelAgent", id="25", type="Notice"

@@ -49,16 +49,24 @@ public class Nurse extends Employee {
     public void goRefillInjections()
     {
         m_state = EmployeeState.GOING_TO_REFILL;
+
     }
 
     public void goBackFromRefill()
     {
+
         m_state = EmployeeState.GOING_BACK_FROM_REFILL;
+    }
+
+    public void backFromRefill(double time)
+    {
+        super.setAvailable(time);
     }
 
     public void waitForRefill()
     {
         m_state = EmployeeState.WAITING_FOR_REFILL;
+
     }
 
     public void refillInjections()
