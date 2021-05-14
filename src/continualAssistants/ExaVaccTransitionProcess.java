@@ -27,6 +27,7 @@ public class ExaVaccTransitionProcess extends Process
 	{
 		message.setCode(Mc.finish);
 		hold(m_gen.sample(), message);
+//		hold(0d, message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
